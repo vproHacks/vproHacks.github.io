@@ -1,0 +1,14 @@
+{
+    "name": "RenTogether",
+    "title": "RenTogether - Multiplayer VN Experience",
+    "description": "A utility that allows for a host to share their VN gameplay to many others in a quiz-like format.",
+    "image": "images/rentogether.png",
+    "essay": [
+        "RenTogether was a project that was submitted to Hack the North++.",
+        "RenTogether was made with Python with libraries such as Flask being used to provide the web interface and Pynput used to read keyboard movements.",
+        "RenTogether is used to turn a visual novel into something more interactive, it was aimed towards small parties or large streamers that wanted to get more user involvement in their experience. It will turn the options that are present in the game into a poll for the audience to answer. These poll results will direct the gameplay.",
+        "Created Using: Python3, Flask, Tkinter, Quartz",
+        "You can find RenTogether and it's source code by clicking the project header to get redirected to the github."
+    ],
+    "github": "https://github.com/vproHacks/RenTogether"
+}

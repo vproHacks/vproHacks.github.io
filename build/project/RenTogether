@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>RenTogether - Multiplayer VN Experience </title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/static/css/main.css" />
+		<noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="/" class="title">Vraj Prajapati</a>
+				<nav>
+					<ul>
+						<li><a href="/">Go Home</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major"><a href="https://github.com/vproHacks/RenTogether">RenTogether - Multiplayer VN Experience</a></h1>
+							
+							<p>RenTogether was a project that was submitted to Hack the North++.</p>
+							
+							<p>RenTogether was made with Python with libraries such as Flask being used to provide the web interface and Pynput used to read keyboard movements.</p>
+							
+							<p>RenTogether is used to turn a visual novel into something more interactive, it was aimed towards small parties or large streamers that wanted to get more user involvement in their experience. It will turn the options that are present in the game into a poll for the audience to answer. These poll results will direct the gameplay.</p>
+							
+							<p>Created Using: Python3, Flask, Tkinter, Quartz</p>
+							
+							<p>You can find RenTogether and it&#39;s source code by clicking the project header to get redirected to the github.</p>
+							
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Vraj Prajapati. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="/static/js/jquery.min.js"></script>
+			<script src="/static/js/jquery.scrollex.min.js"></script>
+			<script src="/static/js/jquery.scrolly.min.js"></script>
+			<script src="/static/js/browser.min.js"></script>
+			<script src="/static/js/breakpoints.min.js"></script>
+			<script src="/static/js/util.js"></script>
+			<script src="/static/js/main.js"></script>
+
+	</body>
+</html>
