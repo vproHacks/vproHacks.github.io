@@ -1,0 +1,99 @@
+---
+layout: default
+---
+
+<section class="crt-hero">
+  <div class="crt-hero__grid-bg"></div>
+  <div class="crt-hero__stripe-wrap" aria-hidden="true">
+    <div class="crt-hero__stripe crt-hero__stripe--a"></div>
+    <div class="crt-hero__stripe crt-hero__stripe--b"></div>
+    <canvas class="crt-hero__stripe-noise" width="1" height="1"></canvas>
+    <div class="crt-hero__stripe-scan"></div>
+  </div>
+  <div class="crt-hero__scan"></div>
+
+  <div class="crt-hero__rec">
+    <span class="crt-hero__rec-dot"></span>REC
+  </div>
+
+  <h1 class="crt-hero__title">
+    BUILD<br>
+    <span class="hero-accent">DYNAMIC.</span><br>
+    SYSTEMS.
+  </h1>
+
+  <p class="crt-hero__subtitle">
+    R O B O T I C S &nbsp;&nbsp;·&nbsp;&nbsp; A I &nbsp;&nbsp;·&nbsp;&nbsp; H A R D W A R E
+  </p>
+
+  <div class="crt-hero__bar"></div>
+
+  <div class="crt-hero__cta home-section__links">
+    <a href="{{ '/work/' | relative_url }}" class="btn btn-primary">VIEW WORK &nbsp;→</a>
+    <a href="{{ '/about/' | relative_url }}" class="btn btn-outline">ABOUT ME</a>
+    <a href="{{ '/assets/Vraj Prajapati - Resume.pdf' | relative_url }}" class="btn btn-outline">RESUME ↓</a>
+  </div>
+
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat__num text-green">3+</div>
+      <div class="hero-stat__label">Featured Projects</div>
+    </div>
+    <div>
+      <div class="hero-stat__num">2027</div>
+      <div class="hero-stat__label">EngSci @ UofT</div>
+    </div>
+    <div>
+      <div class="hero-stat__num text-yellow" style="font-size:38px">∞</div>
+      <div class="hero-stat__label">Things to Build</div>
+    </div>
+  </div>
+</section>
+
+<div class="rainbow-bar rainbow-bar--thick"></div>
+
+<section class="section">
+  <h2 class="section__title">RECENT WORK</h2>
+  <p class="section__desc">Engineering projects spanning hardware, AI, and full-stack software.</p>
+
+  <div class="grid-3">
+    {% assign recent = site.posts | slice: 0, 3 %}
+    {% for post in recent %}
+      {% assign accent = 'var(--neon-green)' %}
+      {% if post.tags contains 'hardware' %}{% assign accent = 'var(--neon-red)' %}{% endif %}
+      {% if post.tags contains 'fullstack' %}{% assign accent = 'var(--neon-blue)' %}{% endif %}
+      {% if post.tags contains 'hackathon' %}{% assign accent = 'var(--neon-yellow)' %}{% endif %}
+      <a href="{{ post.url | relative_url }}" class="card">
+        {% if post.image %}
+          <div class="card-preview" style="padding:0;height:128px;">
+            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+        {% else %}
+          <div class="card-preview"></div>
+        {% endif %}
+        <div class="card__bar" style="background:{{ accent }};"></div>
+        <div class="card__inner">
+          <div class="card__tag" style="color:{{ accent }};border-color:{{ accent }};">{{ post.categories | first | default: 'project' }}</div>
+          <div class="card__title">{{ post.title | upcase | truncate: 40 }}</div>
+          <p class="card__body">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+          <div class="card__foot">VIEW PROJECT &nbsp;→</div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="rainbow-bar"></div>
+
+<section class="section section--sm">
+  <h2 class="section__title">GET IN <span class="text-green">TOUCH</span></h2>
+  <p class="section__desc" style="margin-bottom:28px;">Open to collaborations on robotics, ML systems, and hardware projects.</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <a href="mailto:{{ site.email }}" class="btn btn-primary">EMAIL ME &nbsp;→</a>
+    <a href="{{ '/contact/' | relative_url }}" class="btn btn-outline">CONTACT PAGE</a>
+  </div>
+</section>
+
+<div class="rainbow-bar rainbow-bar--thick"></div>
+
+<script src="{{ '/assets/js/hero-stripe.js' | relative_url }}" defer></script>

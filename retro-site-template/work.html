@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work — SIGNAL</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ── WORK PAGE ── */
+
+    /* Featured project strip */
+    .featured-project {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      margin-bottom: 64px;
+      transition: box-shadow .22s;
+    }
+    .featured-project:hover { box-shadow: 0 20px 64px rgba(0,0,0,.5); }
+
+    .feat-img {
+      min-height: 400px;
+      background: var(--bg);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .feat-img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(255,61,61,.025) 0px,  rgba(255,61,61,.025) 10px,
+        rgba(255,140,0,.025) 10px, rgba(255,140,0,.025) 20px,
+        rgba(255,221,0,.025) 20px, rgba(255,221,0,.025) 30px,
+        rgba(59,224,64,.025) 30px, rgba(59,224,64,.025) 40px,
+        rgba(45,127,255,.025) 40px,rgba(45,127,255,.025) 50px,
+        rgba(155,39,255,.025) 50px,rgba(155,39,255,.025) 60px
+      );
+    }
+    .feat-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,.055) 2px, rgba(0,0,0,.055) 3px
+      );
+    }
+    .feat-img__label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,.07);
+      padding: 8px 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .feat-content {
+      padding: 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .feat-content__eye {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--neon-red);
+      text-shadow: var(--glow-text-red);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .feat-content__title {
+      font-family: var(--font-display);
+      font-size: clamp(40px,5vw,64px);
+      letter-spacing: .02em;
+      line-height: .9;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+    .feat-content__body {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.78;
+      margin-bottom: 28px;
+    }
+    .feat-content__meta {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 20px;
+    }
+
+    /* Project grid */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .project-card {
+      position: relative;
+      aspect-ratio: 4/3;
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--surface);
+    }
+
+    .project-card__bg {
+      position: absolute; inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .project-card__bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        135deg, rgba(255,255,255,.012) 0px, rgba(255,255,255,.012) 1px,
+        transparent 1px, transparent 14px
+      );
+    }
+    .project-card__bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,.055) 2px, rgba(0,0,0,.055) 3px
+      );
+    }
+    .project-card__placeholder {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 8px 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Badge top-left */
+    .project-card__badge {
+      position: absolute;
+      top: 14px; left: 14px;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid;
+      border-radius: 2px;
+      z-index: 3;
+      background: rgba(15,15,14,.75);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Hover overlay */
+    .project-card__overlay {
+      position: absolute; inset: 0;
+      background: rgba(15,15,14,.88);
+      opacity: 0;
+      transition: opacity .24s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 26px;
+      z-index: 2;
+      backdrop-filter: blur(3px);
+    }
+    .project-card:hover .project-card__overlay { opacity: 1; }
+    .project-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.5); }
+
+    .project-card__cat {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .project-card__name {
+      font-family: var(--font-display);
+      font-size: 30px;
+      letter-spacing: .02em;
+      line-height: .95;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .project-card__meta {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      color: var(--text-muted);
+      display: flex;
+      gap: 10px;
+    }
+
+    /* CTA strip */
+    .cta-strip {
+      text-align: center;
+      padding: 88px 80px;
+    }
+
+    @media (max-width: 960px) {
+      .featured-project { grid-template-columns: 1fr; }
+      .feat-img { min-height: 240px; }
+      .feat-content { padding: 32px; }
+      .project-grid { grid-template-columns: 1fr 1fr; }
+      .cta-strip { padding: 64px 24px; }
+    }
+    @media (max-width: 640px) {
+      .project-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="crt-nav">
+    <a href="index.html" class="crt-nav__logo">
+      <span class="crt-nav__dot"></span>
+      <div>
+        <div>SIGNAL</div>
+        <div class="crt-nav__logo-sub">// CRT TEMPLATE</div>
+      </div>
+    </a>
+    <ul class="crt-nav__links">
+      <li><a href="work.html" class="active">WORK</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="blog.html">BLOG</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-header">
+    <div class="page-header__eyebrow">PORTFOLIO / SELECTED WORK</div>
+    <h1 class="page-header__title">WORK</h1>
+    <p class="page-header__desc">Selected projects in branding, web and motion design. Each one a different problem solved with the same commitment to craft.</p>
+  </header>
+
+  <div class="rainbow-bar"></div>
+
+  <section class="section">
+
+    <!-- Filter -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:52px;align-items:center;">
+      <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-right:4px;">FILTER —</span>
+      <button class="tag active" onclick="filterWork('all',this)">ALL</button>
+      <button class="tag" onclick="filterWork('branding',this)">BRANDING</button>
+      <button class="tag" onclick="filterWork('web',this)">WEB</button>
+      <button class="tag" onclick="filterWork('motion',this)">MOTION</button>
+    </div>
+
+    <!-- Featured -->
+    <div class="featured-project" data-cat="branding">
+      <div class="feat-img">
+        <div class="feat-img__label">[ PROJECT IMAGE — 4:3 ]</div>
+      </div>
+      <div class="feat-content">
+        <div class="feat-content__eye">★ FEATURED PROJECT</div>
+        <h2 class="feat-content__title">NEON FRAME<br>IDENTITY</h2>
+        <p class="feat-content__body">Complete brand identity for an independent creative agency — logotype, color system, custom typeface specimen, brand guidelines and print collateral delivered across 6 weeks.</p>
+        <div class="tags">
+          <span class="tag" style="cursor:default;">Brand Identity</span>
+          <span class="tag" style="cursor:default;">Typography</span>
+          <span class="tag" style="cursor:default;">Print</span>
+        </div>
+        <div style="margin-top:24px;">
+          <a href="#" class="btn btn-primary">VIEW CASE STUDY &nbsp;→</a>
+        </div>
+        <div class="feat-content__meta">2024 &nbsp;·&nbsp; BRANDING</div>
+      </div>
+    </div>
+
+    <!-- Project grid -->
+    <div class="project-grid" id="project-grid">
+
+      <div class="project-card" data-cat="web">
+        <div class="project-card__bg" style="background:linear-gradient(145deg,#0d0d1a,#151525);">
+          <div class="project-card__placeholder">[ PROJECT IMAGE ]</div>
+        </div>
+        <div class="project-card__badge text-blue" style="border-color:var(--neon-blue);">WEB</div>
+        <div class="project-card__overlay">
+          <div class="project-card__cat text-blue">Web Design</div>
+          <div class="project-card__name">BROADCAST STUDIO</div>
+          <div class="project-card__meta"><span>2024</span><span>·</span><span>Web Design &amp; Dev</span></div>
+        </div>
+      </div>
+
+      <div class="project-card" data-cat="motion">
+        <div class="project-card__bg" style="background:linear-gradient(145deg,#1a0d0d,#251515);">
+          <div class="project-card__placeholder">[ PROJECT IMAGE ]</div>
+        </div>
+        <div class="project-card__badge text-red" style="border-color:var(--neon-red);">MOTION</div>
+        <div class="project-card__overlay">
+          <div class="project-card__cat text-red">Motion Design</div>
+          <div class="project-card__name">SIGNAL INTRO SEQUENCE</div>
+          <div class="project-card__meta"><span>2024</span><span>·</span><span>After Effects</span></div>
+        </div>
+      </div>
+
+      <div class="project-card" data-cat="branding">
+        <div class="project-card__bg" style="background:linear-gradient(145deg,#1a100a,#251b0a);">
+          <div class="project-card__placeholder">[ PROJECT IMAGE ]</div>
+        </div>
+        <div class="project-card__badge text-orange" style="border-color:var(--neon-orange);">BRANDING</div>
+        <div class="project-card__overlay">
+          <div class="project-card__cat text-orange">Brand Identity</div>
+          <div class="project-card__name">RETRO CAFE REBRAND</div>
+          <div class="project-card__meta"><span>2023</span><span>·</span><span>Logo, Print, Menu</span></div>
+        </div>
+      </div>
+
+      <div class="project-card" data-cat="web">
+        <div class="project-card__bg" style="background:linear-gradient(145deg,#0a1a10,#0d2515);">
+          <div class="project-card__placeholder">[ PROJECT IMAGE ]</div>
+        </div>
+        <div class="project-card__badge text-green" style="border-color:var(--neon-green);">WEB</div>
+        <div class="project-card__overlay">
+          <div class="project-card__cat text-green">Web Development</div>
+          <div class="project-card__name">PHOSPHOR PORTFOLIO</div>
+          <div class="project-card__meta"><span>2023</span><span>·</span><span>React, CSS</span></div>
+        </div>
+      </div>
+
+      <div class="project-card" data-cat="motion">
+        <div class="project-card__bg" style="background:linear-gradient(145deg,#100d1a,#181525);">
+          <div class="project-card__placeholder">[ PROJECT IMAGE ]</div>
+        </div>
+        <div class="project-card__badge text-purple" style="border-color:var(--neon-purple);">MOTION</div>
+        <div class="project-card__overlay">
+          <div class="project-card__cat text-purple">Motion Design</div>
+          <div class="project-card__name">CRT TITLE SEQUENCE</div>
+          <div class="project-card__meta"><span>2023</span><span>·</span><span>Premiere, AE</span></div>
+        </div>
+      </div>
+
+      <div class="project-card" data-cat="branding">
+        <div class="project-card__bg" style="background:linear-gradient(145deg,#1a150a,#25200a);">
+          <div class="project-card__placeholder">[ PROJECT IMAGE ]</div>
+        </div>
+        <div class="project-card__badge text-yellow" style="border-color:var(--neon-yellow);">BRANDING</div>
+        <div class="project-card__overlay">
+          <div class="project-card__cat text-yellow">Brand Identity</div>
+          <div class="project-card__name">KINESCOPE RECORDS</div>
+          <div class="project-card__meta"><span>2022</span><span>·</span><span>Brand, Merch, Vinyl</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CTA -->
+  <div class="cta-strip">
+    <div class="section__eyebrow" style="justify-content:center;">START A PROJECT</div>
+    <h2 style="font-family:var(--font-display);font-size:clamp(48px,7vw,96px);letter-spacing:.02em;line-height:.9;margin-bottom:20px;">
+      HAVE SOMETHING<br><span class="text-green">IN MIND?</span>
+    </h2>
+    <p style="font-family:var(--font-mono);font-size:13px;color:var(--text-dim);max-width:440px;margin:0 auto 36px;line-height:1.75;">
+      Every great project starts with a conversation. Tell me what you're building and let's see if we're a good fit.
+    </p>
+    <a href="contact.html" class="btn btn-primary" style="padding:16px 40px;font-size:12px;">GET IN TOUCH &nbsp;→</a>
+  </div>
+
+  <div class="rainbow-bar rainbow-bar--thick"></div>
+
+  <footer class="site-footer">
+    <div class="site-footer__brand">SIGNAL</div>
+    <div class="site-footer__copy">© 2024 · All rights reserved</div>
+    <nav class="site-footer__links">
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+
+  <script>
+    function filterWork(cat, el) {
+      document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      // Cards
+      document.querySelectorAll('.project-card').forEach(card => {
+        const show = cat === 'all' || card.dataset.cat === cat;
+        card.style.opacity    = show ? '1' : '0.12';
+        card.style.transform  = show ? '' : 'scale(0.97)';
+        card.style.pointerEvents = show ? 'auto' : 'none';
+        card.style.transition = 'opacity .25s, transform .25s';
+      });
+
+      // Featured
+      const feat = document.querySelector('.featured-project');
+      if (feat) {
+        const show = cat === 'all' || feat.dataset.cat === cat;
+        feat.style.opacity   = show ? '1' : '0.12';
+        feat.style.transition = 'opacity .25s';
+      }
+    }
+  </script>
+</body>
+</html>

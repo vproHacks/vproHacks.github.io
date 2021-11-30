@@ -1,0 +1,19 @@
+---
+layout: default
+---
+<header class="page-header">
+  <h1 class="page-header__title">{{ page.title | upcase }}</h1>
+  {% if page.header_desc %}
+    <p class="page-header__desc">{{ page.header_desc }}</p>
+  {% endif %}
+</header>
+
+<div class="rainbow-bar"></div>
+
+<section class="section">
+  <div class="page-content">
+    {{ content }}
+  </div>
+</section>
+
+<div class="rainbow-bar"></div>

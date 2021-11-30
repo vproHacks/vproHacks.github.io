@@ -1,0 +1,12 @@
+<footer class="site-footer">
+  <div class="site-footer__brand">Vraj.dev</div>
+  <div class="site-footer__copy">© {{ site.time | date: '%Y' }} · {{ site.author.name }}</div>
+  <nav class="site-footer__links">
+    {% for item in site.data.navigation.main %}
+      {% unless item.title == 'Home' or item.title == 'Resume' %}
+        <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+      {% endunless %}
+    {% endfor %}
+    <a href="mailto:{{ site.email }}">Email</a>
+  </nav>
+</footer>

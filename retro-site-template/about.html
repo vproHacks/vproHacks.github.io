@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — SIGNAL</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ── ABOUT PAGE ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    /* Photo placeholder */
+    .photo-wrap {
+      position: sticky;
+      top: calc(var(--nav-h) + 32px);
+    }
+    .photo-box {
+      aspect-ratio: 3/4;
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .photo-box::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,.014) 0px, rgba(255,255,255,.014) 1px,
+        transparent 1px, transparent 13px
+      );
+    }
+    .photo-box::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,.055) 2px, rgba(0,0,0,.055) 3px
+      );
+    }
+    .photo-box__label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 8px 14px;
+      position: relative;
+      z-index: 1;
+    }
+    /* Corner brackets */
+    .corner {
+      position: absolute;
+      width: 22px; height: 22px;
+      z-index: 2;
+    }
+    .corner--tl { top:12px; left:12px;  border-top:2px solid var(--neon-green); border-left:2px solid var(--neon-green); box-shadow:var(--glow-green); }
+    .corner--tr { top:12px; right:12px; border-top:2px solid var(--neon-green); border-right:2px solid var(--neon-green); box-shadow:var(--glow-green); }
+    .corner--bl { bottom:12px; left:12px;  border-bottom:2px solid var(--neon-green); border-left:2px solid var(--neon-green); box-shadow:var(--glow-green); }
+    .corner--br { bottom:12px; right:12px; border-bottom:2px solid var(--neon-green); border-right:2px solid var(--neon-green); box-shadow:var(--glow-green); }
+
+    /* Photo caption */
+    .photo-caption {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .photo-caption__name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: .04em;
+      color: var(--text);
+    }
+    .photo-caption__avail {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--neon-green);
+    }
+    .avail-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      box-shadow: var(--glow-green);
+      animation: blink 2s step-start infinite;
+    }
+
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: rgba(255,255,255,.04);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      gap: 1px;
+    }
+    .stat-cell {
+      background: var(--surface);
+      padding: 26px 22px;
+    }
+    .stat-cell__num {
+      font-family: var(--font-display);
+      font-size: 52px;
+      letter-spacing: .02em;
+      line-height: 1;
+    }
+    .stat-cell__label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: rgba(255,255,255,.07);
+    }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 32px;
+      padding: 30px 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      position: relative;
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 38px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      box-shadow: var(--glow-green);
+    }
+    .tl-item__year {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: .04em;
+      color: var(--text-dim);
+      padding-left: 22px;
+      padding-top: 2px;
+      line-height: 1.1;
+    }
+    .tl-item__role {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: .02em;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .tl-item__co {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--neon-green);
+      text-shadow: var(--glow-text-green);
+      margin-bottom: 10px;
+    }
+    .tl-item__desc {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.78;
+    }
+
+    @media (max-width: 960px) {
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .photo-wrap { position: static; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .tl-item { grid-template-columns: 1fr; gap: 8px; }
+      .tl-item__year { padding-left: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="crt-nav">
+    <a href="index.html" class="crt-nav__logo">
+      <span class="crt-nav__dot"></span>
+      <div>
+        <div>SIGNAL</div>
+        <div class="crt-nav__logo-sub">// CRT TEMPLATE</div>
+      </div>
+    </a>
+    <ul class="crt-nav__links">
+      <li><a href="work.html">WORK</a></li>
+      <li><a href="about.html" class="active">ABOUT</a></li>
+      <li><a href="blog.html">BLOG</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="page-header__eyebrow">BIO / ABOUT ME</div>
+    <h1 class="page-header__title">
+      YOUR<br>
+      <span class="text-green">NAME</span><br>
+      HERE
+    </h1>
+    <p class="page-header__desc">
+      Designer, developer &amp; creative director based in [City].
+      Crafting bold digital experiences with a love for retro aesthetics
+      and forward-thinking design.
+    </p>
+  </header>
+
+  <div class="rainbow-bar"></div>
+
+  <!-- BIO -->
+  <section class="section">
+    <div class="about-grid">
+
+      <!-- Photo column -->
+      <div class="photo-wrap">
+        <div class="photo-box">
+          <span class="corner corner--tl"></span>
+          <span class="corner corner--tr"></span>
+          <span class="corner corner--bl"></span>
+          <span class="corner corner--br"></span>
+          <div class="photo-box__label">[ PHOTO — 3:4 PORTRAIT ]</div>
+        </div>
+        <div class="photo-caption">
+          <div class="photo-caption__name">YOUR NAME</div>
+          <div class="photo-caption__avail">
+            <span class="avail-dot"></span>AVAILABLE
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio column -->
+      <div>
+        <div class="section__eyebrow">WHO I AM</div>
+        <h2 style="font-family:var(--font-display);font-size:clamp(44px,6vw,68px);letter-spacing:.02em;line-height:.9;margin-bottom:28px;">
+          DESIGNER &amp;<br><span class="text-green">CREATOR</span>
+        </h2>
+
+        <div style="display:flex;flex-direction:column;gap:18px;font-family:var(--font-mono);font-size:13px;color:var(--text-dim);line-height:1.82;margin-bottom:38px;">
+          <p>
+            I've been designing and building digital experiences for over 8 years.
+            My work sits at the intersection of bold visual design and functional
+            engineering — where aesthetics serve purpose.
+          </p>
+          <p>
+            I'm drawn to retro-futurism: the idea that the visual language of the
+            past can feel more alive than the sanitized minimalism of today.
+            CRT monitors, VHS artifacts, neon phosphor — these aren't nostalgia.
+            They're a design system with character.
+          </p>
+          <p>
+            Currently available for <span class="text-green">freelance projects</span>,
+            brand identities and motion work. Response within 48 hours.
+          </p>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">— SKILLS</div>
+        <div class="tags" style="margin-bottom:40px;">
+          <span class="tag active">Brand Identity</span>
+          <span class="tag active">Motion Design</span>
+          <span class="tag">Web Development</span>
+          <span class="tag">UI/UX Design</span>
+          <span class="tag">Art Direction</span>
+          <span class="tag">Typography</span>
+          <span class="tag">Illustration</span>
+          <span class="tag">Photography</span>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="work.html" class="btn btn-primary">VIEW MY WORK &nbsp;→</a>
+          <a href="contact.html" class="btn btn-outline">GET IN TOUCH</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- STATS -->
+  <section class="section--sm" style="padding-top:56px;padding-bottom:56px;">
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-cell__num text-green">8+</div>
+        <div class="stat-cell__label">Years Experience</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell__num">120</div>
+        <div class="stat-cell__label">Projects Completed</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell__num text-yellow">48</div>
+        <div class="stat-cell__label">Happy Clients</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell__num">3</div>
+        <div class="stat-cell__label">Awards Won</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- EXPERIENCE -->
+  <section class="section">
+    <div class="section__eyebrow">WORK HISTORY</div>
+    <h2 class="section__title">EXPERIENCE</h2>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-item__year">2022<br>NOW</div>
+        <div>
+          <div class="tl-item__role">CREATIVE DIRECTOR</div>
+          <div class="tl-item__co">Studio Broadcast — New York</div>
+          <p class="tl-item__desc">Leading creative strategy and visual identity for global brands. Overseeing a team of 6 designers across branding, web and motion. Clients include Fortune 500 companies and independent studios.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-item__year">2019<br>2022</div>
+        <div>
+          <div class="tl-item__role">SENIOR DESIGNER</div>
+          <div class="tl-item__co">Neon Frame Agency — London</div>
+          <p class="tl-item__desc">Brand identity, print and digital design for startups and established companies. Developed the in-house design system used across 30+ client projects over three years.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-item__year">2016<br>2019</div>
+        <div>
+          <div class="tl-item__role">UI/UX DESIGNER</div>
+          <div class="tl-item__co">CRT Digital — Toronto</div>
+          <p class="tl-item__desc">Designed user interfaces and interactive prototypes for mobile and web applications. Led user research, usability testing and shipped 12 major product features.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-item__year">2014<br>2016</div>
+        <div>
+          <div class="tl-item__role">GRAPHIC DESIGNER</div>
+          <div class="tl-item__co">Freelance</div>
+          <p class="tl-item__desc">Logo design, print materials and brand guidelines for local businesses. Developed a signature retro-forward visual style that became the foundation for all future work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rainbow-bar"></div>
+
+  <footer class="site-footer">
+    <div class="site-footer__brand">SIGNAL</div>
+    <div class="site-footer__copy">© 2024 · All rights reserved</div>
+    <nav class="site-footer__links">
+      <a href="work.html">Work</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+
+</body>
+</html>

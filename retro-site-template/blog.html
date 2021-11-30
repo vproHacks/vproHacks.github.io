@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — SIGNAL</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ── BLOG PAGE ── */
+
+    /* Featured post */
+    .post-featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      margin-bottom: 64px;
+      transition: box-shadow .22s;
+    }
+    .post-featured:hover { box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .post-featured__img {
+      min-height: 340px;
+      background: var(--bg);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .post-featured__img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(255,217,61,.025) 0px, rgba(255,217,61,.025) 10px,
+        transparent 10px, transparent 20px
+      );
+    }
+    .post-featured__img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,.055) 2px, rgba(0,0,0,.055) 3px
+      );
+    }
+    .post-featured__img-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,.07);
+      padding: 8px 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .post-featured__content {
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .post-featured__badge {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--neon-yellow);
+      text-shadow: var(--glow-text-yellow);
+      border: 1px solid rgba(255,217,61,.4);
+      padding: 4px 10px;
+      display: inline-block;
+      margin-bottom: 16px;
+      border-radius: 2px;
+      width: fit-content;
+    }
+    .post-featured__title {
+      font-family: var(--font-display);
+      font-size: clamp(36px,4vw,56px);
+      letter-spacing: .02em;
+      line-height: .92;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .post-featured__excerpt {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.78;
+      margin-bottom: 28px;
+    }
+    .post-featured__meta {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Post list rows */
+    .post-list { display: flex; flex-direction: column; }
+    .post-row {
+      display: grid;
+      grid-template-columns: 108px 1fr 24px;
+      gap: 36px;
+      align-items: start;
+      padding: 34px 0;
+      border-bottom: 1px solid rgba(255,255,255,.055);
+      transition: background .15s;
+      cursor: pointer;
+      color: inherit;
+    }
+    .post-row:first-child { border-top: 1px solid rgba(255,255,255,.055); }
+    .post-row:hover .post-row__title { color: var(--neon-yellow); text-shadow: 0 0 20px rgba(255,217,61,.2); }
+    .post-row:hover .post-row__arrow { color: var(--neon-yellow); transform: translateX(5px); }
+
+    .post-row__date {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      color: var(--text-muted);
+      padding-top: 5px;
+      line-height: 1.5;
+    }
+    .post-row__cat {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      border: 1px solid;
+      padding: 3px 8px;
+      display: inline-block;
+      margin-bottom: 10px;
+      border-radius: 2px;
+    }
+    .post-row__title {
+      font-family: var(--font-display);
+      font-size: clamp(28px,3.5vw,40px);
+      letter-spacing: .02em;
+      line-height: .95;
+      color: var(--text);
+      margin-bottom: 10px;
+      transition: color .2s, text-shadow .2s;
+    }
+    .post-row__excerpt {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.75;
+      max-width: 580px;
+    }
+    .post-row__arrow {
+      font-size: 18px;
+      color: var(--text-muted);
+      padding-top: 6px;
+      transition: color .2s, transform .2s;
+    }
+
+    @media (max-width: 960px) {
+      .post-featured { grid-template-columns: 1fr; }
+      .post-featured__img { min-height: 220px; }
+      .post-featured__content { padding: 32px; }
+      .post-row { grid-template-columns: 1fr 20px; gap: 20px; }
+      .post-row__date { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="crt-nav">
+    <a href="index.html" class="crt-nav__logo">
+      <span class="crt-nav__dot"></span>
+      <div>
+        <div>SIGNAL</div>
+        <div class="crt-nav__logo-sub">// CRT TEMPLATE</div>
+      </div>
+    </a>
+    <ul class="crt-nav__links">
+      <li><a href="work.html">WORK</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="blog.html" class="active">BLOG</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-header">
+    <div class="page-header__eyebrow">EDITORIAL / WRITING</div>
+    <h1 class="page-header__title">BLOG</h1>
+    <p class="page-header__desc">
+      Thoughts on design, technology and the art of making things.
+      Published whenever inspiration strikes.
+    </p>
+  </header>
+
+  <div class="rainbow-bar"></div>
+
+  <section class="section">
+
+    <!-- Filter row -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:56px;align-items:center;">
+      <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-right:4px;">FILTER —</span>
+      <button class="tag active" onclick="filterPosts('all',this)">ALL</button>
+      <button class="tag" onclick="filterPosts('design',this)">DESIGN</button>
+      <button class="tag" onclick="filterPosts('code',this)">CODE</button>
+      <button class="tag" onclick="filterPosts('motion',this)">MOTION</button>
+      <button class="tag" onclick="filterPosts('culture',this)">CULTURE</button>
+    </div>
+
+    <!-- Featured -->
+    <a href="blog-post.html" class="post-featured" data-cat="design">
+      <div class="post-featured__img">
+        <div class="post-featured__img-label">[ FEATURED IMAGE — 16:9 ]</div>
+      </div>
+      <div class="post-featured__content">
+        <div class="post-featured__badge">★ FEATURED</div>
+        <h2 class="post-featured__title">THE ART OF THE RETRO REBRAND</h2>
+        <p class="post-featured__excerpt">
+          Why the world's biggest companies look better wrapped in neon,
+          scanlines and a little phosphor glow. A deep dive into the CRT
+          design movement taking over social media.
+        </p>
+        <div class="post-featured__meta">MAY 2024 &nbsp;·&nbsp; 8 MIN READ &nbsp;·&nbsp; DESIGN</div>
+      </div>
+    </a>
+
+    <!-- Post list -->
+    <div class="post-list" id="post-list">
+
+      <a href="blog-post.html" class="post-row" data-cat="design">
+        <div class="post-row__date">APR<br>2024</div>
+        <div>
+          <div class="post-row__cat text-yellow" style="border-color:var(--neon-yellow);">Design</div>
+          <div class="post-row__title">TYPOGRAPHY IN THE CRT ERA</div>
+          <p class="post-row__excerpt">How physical constraints shaped some of the most iconic type treatments in history — and what we can learn from them today.</p>
+        </div>
+        <div class="post-row__arrow">→</div>
+      </a>
+
+      <a href="blog-post.html" class="post-row" data-cat="code">
+        <div class="post-row__date">MAR<br>2024</div>
+        <div>
+          <div class="post-row__cat text-green" style="border-color:var(--neon-green);">Code</div>
+          <div class="post-row__title">CSS GLITCH EFFECTS THAT ACTUALLY WORK</div>
+          <p class="post-row__excerpt">A technical breakdown of building authentic CRT glitch animations with pure CSS — no JavaScript required.</p>
+        </div>
+        <div class="post-row__arrow">→</div>
+      </a>
+
+      <a href="blog-post.html" class="post-row" data-cat="motion">
+        <div class="post-row__date">FEB<br>2024</div>
+        <div>
+          <div class="post-row__cat text-blue" style="border-color:var(--neon-blue);">Motion</div>
+          <div class="post-row__title">ANIMATING WITH INTENTION</div>
+          <p class="post-row__excerpt">The difference between motion that feels alive and motion that just moves. Principles for meaningful animation in interface design.</p>
+        </div>
+        <div class="post-row__arrow">→</div>
+      </a>
+
+      <a href="blog-post.html" class="post-row" data-cat="culture">
+        <div class="post-row__date">JAN<br>2024</div>
+        <div>
+          <div class="post-row__cat text-orange" style="border-color:var(--neon-orange);">Culture</div>
+          <div class="post-row__title">WHY NOSTALGIA IS A DESIGN SUPERPOWER</div>
+          <p class="post-row__excerpt">Familiarity breeds trust. But nostalgia done wrong breeds cringe. Here's how to walk the line between homage and pastiche.</p>
+        </div>
+        <div class="post-row__arrow">→</div>
+      </a>
+
+      <a href="blog-post.html" class="post-row" data-cat="design">
+        <div class="post-row__date">DEC<br>2023</div>
+        <div>
+          <div class="post-row__cat text-yellow" style="border-color:var(--neon-yellow);">Design</div>
+          <div class="post-row__title">THE CASE FOR CONSTRAINT IN DESIGN</div>
+          <p class="post-row__excerpt">Infinite tools and zero limitations lead to mediocre work. Constraints — whether technical or self-imposed — are where creativity begins.</p>
+        </div>
+        <div class="post-row__arrow">→</div>
+      </a>
+
+      <a href="blog-post.html" class="post-row" data-cat="code">
+        <div class="post-row__date">NOV<br>2023</div>
+        <div>
+          <div class="post-row__cat text-green" style="border-color:var(--neon-green);">Code</div>
+          <div class="post-row__title">BUILDING A DESIGN SYSTEM FROM SCRATCH</div>
+          <p class="post-row__excerpt">Step-by-step: how to build a scalable design system with CSS custom properties, shared tokens and proper documentation.</p>
+        </div>
+        <div class="post-row__arrow">→</div>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="rainbow-bar"></div>
+
+  <footer class="site-footer">
+    <div class="site-footer__brand">SIGNAL</div>
+    <div class="site-footer__copy">© 2024 · All rights reserved</div>
+    <nav class="site-footer__links">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+
+  <script>
+    function filterPosts(cat, el) {
+      document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      // Featured post
+      const feat = document.querySelector('.post-featured');
+      const featShow = cat === 'all' || feat.dataset.cat === cat;
+      feat.style.display = featShow ? 'grid' : 'none';
+
+      // List rows
+      document.querySelectorAll('.post-row').forEach(row => {
+        const show = cat === 'all' || row.dataset.cat === cat;
+        row.style.display = show ? 'grid' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

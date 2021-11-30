@@ -1,0 +1,84 @@
+---
+layout: default
+---
+{% assign words = content | number_of_words %}
+{% assign read_mins = words | divided_by: 200 %}
+{% if read_mins < 1 %}{% assign read_mins = 1 %}{% endif %}
+{% assign back_url = '/blog/' %}
+{% if page.categories contains 'projects' %}{% assign back_url = '/work/' %}{% endif %}
+
+<header class="post-header-wrap">
+  <div class="post-header-wrap__inner">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap;">
+      <a href="{{ back_url | relative_url }}" style="font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);">← BACK</a>
+      <span style="color:var(--text-muted);">·</span>
+      <span class="tag active" style="cursor:default;">{{ page.tags | first | default: 'project' | upcase }}</span>
+    </div>
+
+    <h1 class="post-header__title">{{ page.title | upcase }}</h1>
+
+    <div class="post-meta-bar">
+      <div class="meta-item">DATE <span>{{ page.date | date: '%b %d, %Y' | upcase }}</span></div>
+      <div class="meta-item">READ TIME <span>{{ read_mins }} MIN</span></div>
+      <div class="meta-item">AUTHOR <span>{{ site.author.name | upcase }}</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="rainbow-bar"></div>
+
+<section class="section">
+  <div class="post-layout">
+    <article class="article">
+      {{ content }}
+      <div style="margin-top:52px;padding-top:32px;border-top:1px solid rgba(255,255,255,.055);">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">TAGGED</div>
+        <div class="tags">
+          {% for tag in page.tags %}
+            <span class="tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </article>
+
+    <aside class="sidebar">
+      <div class="sidebar-box">
+        <div class="sidebar-box__head">ARTICLE INFO</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">PUBLISHED</span>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);">{{ page.date | date: '%b %Y' | upcase }}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">READ TIME</span>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);">{{ read_mins }} MIN</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">CATEGORY</span>
+            <span class="text-yellow" style="font-family:var(--font-mono);font-size:10px;">{{ page.categories | first | upcase }}</span>
+          </div>
+        </div>
+      </div>
+      <a href="{{ '/contact/' | relative_url }}" class="btn btn-primary" style="width:100%;justify-content:center;text-align:center;">GET IN TOUCH &nbsp;→</a>
+    </aside>
+  </div>
+</section>
+
+<hr class="divider">
+<section class="section">
+  <h2 class="section__title" style="margin-bottom:32px;">RELATED POSTS</h2>
+  <div class="related-grid">
+    {% assign related_shown = 0 %}
+    {% for post in site.posts %}
+      {% if post.url != page.url and related_shown < 3 %}
+        <a href="{{ post.url | relative_url }}" class="related-card" style="border-top-color:var(--neon-green);">
+          <div class="related-card__cat text-green">{{ post.tags | first | upcase }}</div>
+          <div class="related-card__title">{{ post.title | upcase | truncate: 48 }}</div>
+        </a>
+        {% assign related_shown = related_shown | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<div class="rainbow-bar"></div>

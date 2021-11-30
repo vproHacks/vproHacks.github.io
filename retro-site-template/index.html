@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGNAL — CRT Website Template</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ── INDEX-SPECIFIC STYLES ── */
+    .hero-accent { color: var(--neon-yellow); text-shadow: var(--glow-text-yellow); }
+
+    /* Hero stat strip */
+    .hero-stats {
+      display: flex;
+      gap: 44px;
+      margin-top: 56px;
+      padding-top: 36px;
+      border-top: 1px solid rgba(255,255,255,.055);
+    }
+    .hero-stat__num {
+      font-family: var(--font-display);
+      font-size: 38px;
+      letter-spacing: .04em;
+      line-height: 1;
+      color: var(--text);
+    }
+    .hero-stat__label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    /* Card preview mini screens */
+    .card-preview {
+      height: 128px;
+      background: var(--bg);
+      padding: 14px 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-preview::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,.07) 2px, rgba(0,0,0,.07) 3px
+      );
+      pointer-events: none;
+    }
+    .pv-line {
+      height: 6px;
+      border-radius: 2px;
+      background: rgba(255,255,255,.07);
+    }
+    .pv-line--title { height: 13px; width: 62%; }
+    .pv-line--w80   { width: 80%; }
+    .pv-line--w55   { width: 55%; }
+    .pv-line--w35   { width: 35%; }
+    .pv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      flex: 1;
+      margin-top: 2px;
+    }
+    .pv-cell {
+      background: rgba(255,255,255,.045);
+      border-radius: 2px;
+    }
+
+    /* Color swatches */
+    .swatch-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 56px; }
+    .swatch { display: flex; flex-direction: column; gap: 8px; }
+    .swatch__block {
+      width: 80px; height: 56px;
+      border-radius: var(--r-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .swatch__label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Type specimen */
+    .type-card {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,.04);
+    }
+    .type-card__label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    /* ══ CRT STARTUP INTRO ══════════════════════════════════
+       localStorage key: 'signal_intro_seen'
+       Replay: localStorage.removeItem('signal_intro_seen') → reload
+    ════════════════════════════════════════════════════════ */
+    #crt-intro {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 99999;
+      pointer-events: all;
+    }
+    #crt-screen {
+      position: absolute;
+      inset: 0;
+      background: #060606;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scaleY(0.003);
+      transform-origin: center;
+      overflow: hidden;
+    }
+    #crt-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .intro-lines {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,.14) 2px, rgba(0,0,0,.14) 3px
+      );
+      pointer-events: none;
+      z-index: 8;
+    }
+    .intro-vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,.78) 100%);
+      pointer-events: none;
+      z-index: 7;
+    }
+    #intro-sweep {
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      height: 3px;
+      background: rgba(255,255,255,.2);
+      box-shadow: 0 0 24px 10px rgba(255,255,255,.07);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 6;
+    }
+    .gbar {
+      position: absolute;
+      left: 0; right: 0;
+      height: 4px;
+      background: rgba(255,255,255,.6);
+      mix-blend-mode: screen;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9;
+    }
+    #intro-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+    }
+    /* SVG signal icon */
+    #intro-icon {
+      width: 136px;
+      height: 96px;
+      filter: drop-shadow(0 0 16px rgba(77,255,110,.7)) drop-shadow(0 0 40px rgba(77,255,110,.25));
+      margin-bottom: 24px;
+    }
+    #arc-dot { opacity: 0; }
+    #arc1 { stroke-dasharray: 50;  stroke-dashoffset: 50; }
+    #arc2 { stroke-dasharray: 94;  stroke-dashoffset: 94; }
+    #arc3 { stroke-dasharray: 143; stroke-dashoffset: 143; }
+    /* Wordmark */
+    #intro-wordmark {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 13vw, 168px);
+      letter-spacing: .07em;
+      color: #e4dfd4;
+      line-height: .82;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    #intro-tagline {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(8px, 1.05vw, 12px);
+      letter-spacing: .42em;
+      text-transform: uppercase;
+      color: rgba(228,223,212,.36);
+      margin-top: 15px;
+      opacity: 0;
+    }
+    /* UI chrome */
+    #intro-rec {
+      position: absolute;
+      top: 28px; right: 40px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .15em;
+      color: #ff3d3d;
+      text-shadow: 0 0 10px rgba(255,61,61,.8);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      z-index: 11;
+    }
+    #intro-rec-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #ff3d3d;
+      box-shadow: 0 0 10px rgba(255,61,61,.95);
+      animation: blink 1s step-start infinite;
+    }
+    #intro-status {
+      position: absolute;
+      bottom: 28px; left: 44px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(228,223,212,.28);
+      opacity: 0;
+      z-index: 11;
+      transition: color .4s, text-shadow .4s;
+    }
+    #intro-timecode {
+      position: absolute;
+      bottom: 28px; right: 40px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .1em;
+      color: rgba(228,223,212,.18);
+      opacity: 0;
+      z-index: 11;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ CRT STARTUP INTRO ════════════════════════════════
+       Plays once on first visit via localStorage key: 'signal_intro_seen'
+       To replay: open DevTools console → localStorage.removeItem('signal_intro_seen') → reload
+  ════════════════════════════════════════════════════════ -->
+  <div id="crt-intro" aria-hidden="true">
+    <div id="crt-screen">
+      <canvas id="crt-canvas"></canvas>
+      <div class="gbar" id="gb1"></div>
+      <div class="gbar" id="gb2"></div>
+      <div class="gbar" id="gb3"></div>
+      <div id="intro-sweep"></div>
+      <div class="intro-lines"></div>
+      <div class="intro-vignette"></div>
+
+      <!-- SIGNAL logo — broadcast signal arcs + wordmark -->
+      <div id="intro-content">
+        <div id="intro-icon">
+          <!-- Concentric right-opening arcs, all centered at (12,40).
+               Each arc is a perfect semicircle opening rightward. -->
+          <svg viewBox="-6 -12 135 104" fill="none" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+            <path id="arc3" d="M 12 -2 A 42 42 0 0 1 12 82"
+                  stroke="#4dff6e" stroke-width="5.5" stroke-linecap="round"/>
+            <path id="arc2" d="M 12 12 A 28 28 0 0 1 12 68"
+                  stroke="#4dff6e" stroke-width="5.5" stroke-linecap="round"/>
+            <path id="arc1" d="M 12 25 A 15 15 0 0 1 12 55"
+                  stroke="#4dff6e" stroke-width="5.5" stroke-linecap="round"/>
+            <circle id="arc-dot" cx="12" cy="40" r="6.5" fill="#4dff6e"/>
+          </svg>
+        </div>
+        <div id="intro-wordmark">SIGNAL</div>
+        <div id="intro-tagline">B R O A D C A S T &nbsp;&nbsp; S Y S T E M</div>
+      </div>
+
+      <!-- UI chrome overlays -->
+      <div id="intro-rec"><span id="intro-rec-dot"></span>REC</div>
+      <div id="intro-status">INITIALIZING...</div>
+      <div id="intro-timecode">CH.01 &nbsp;·&nbsp; 00:00:00:00</div>
+    </div>
+  </div>
+
+  <!-- ══ NAV ══════════════════════════════════════════════ -->
+  <nav class="crt-nav">
+    <a href="index.html" class="crt-nav__logo">
+      <span class="crt-nav__dot"></span>
+      <div>
+        <div>SIGNAL</div>
+        <div class="crt-nav__logo-sub">// CRT TEMPLATE</div>
+      </div>
+    </a>
+    <ul class="crt-nav__links">
+      <li><a href="work.html">WORK</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="blog.html">BLOG</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══ HERO ═════════════════════════════════════════════ -->
+  <section class="crt-hero">
+    <div class="crt-hero__grid-bg"></div>
+    <div class="crt-hero__stripe"></div>
+    <div class="crt-hero__scan"></div>
+
+    <div class="crt-hero__rec">
+      <span class="crt-hero__rec-dot"></span>REC
+    </div>
+
+    <div class="crt-hero__eyebrow">CRT TEMPLATE SYSTEM &nbsp;·&nbsp; SIGNAL V1.0</div>
+
+    <h1 class="crt-hero__title">
+      YOUR<br>
+      <span class="hero-accent">STORY.</span><br>
+      BROADCAST.
+    </h1>
+
+    <p class="crt-hero__subtitle">
+      P E R S O N A L &nbsp;&nbsp;·&nbsp;&nbsp; C O R P O R A T E &nbsp;&nbsp;·&nbsp;&nbsp; C R E A T I V E
+    </p>
+
+    <div class="crt-hero__bar"></div>
+
+    <div class="crt-hero__cta">
+      <a href="#templates" class="btn btn-primary">EXPLORE TEMPLATES &nbsp;↓</a>
+      <a href="about.html" class="btn btn-outline">ABOUT THIS TEMPLATE</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat__num">6</div>
+        <div class="hero-stat__label">Page Templates</div>
+      </div>
+      <div>
+        <div class="hero-stat__num">1</div>
+        <div class="hero-stat__label">Design System</div>
+      </div>
+      <div>
+        <div class="hero-stat__num text-green" style="font-size:38px">∞</div>
+        <div class="hero-stat__label">Customizable</div>
+      </div>
+    </div>
+
+    <div class="crt-hero__timecode">00:00:00:00 &nbsp;/ CH.01</div>
+    <div class="crt-hero__scroll">↓ &nbsp; SCROLL TO EXPLORE</div>
+  </section>
+
+  <div class="rainbow-bar rainbow-bar--thick" id="templates"></div>
+
+  <!-- ══ TEMPLATE LIBRARY ═════════════════════════════════ -->
+  <section class="section">
+    <div class="section__eyebrow">01 / TEMPLATE LIBRARY</div>
+    <h2 class="section__title">PAGES INCLUDED</h2>
+    <p class="section__desc">Five fully-designed page templates built on one shared CSS design system. Every color, font and effect is a single variable away from being yours.</p>
+
+    <div class="grid-3">
+
+      <!-- Work -->
+      <a href="work.html" class="card">
+        <div class="card-preview">
+          <div class="pv-line pv-line--w35" style="background:rgba(255,61,61,.35);height:7px;"></div>
+          <div class="pv-line pv-line--title" style="background:rgba(255,255,255,.11);margin-top:3px;"></div>
+          <div class="pv-grid" style="margin-top:4px;">
+            <div class="pv-cell" style="background:rgba(255,61,61,.09);border-top:2px solid rgba(255,61,61,.45);"></div>
+            <div class="pv-cell" style="background:rgba(255,140,61,.09);border-top:2px solid rgba(255,140,61,.45);"></div>
+            <div class="pv-cell" style="background:rgba(255,217,61,.07);border-top:2px solid rgba(255,217,61,.35);"></div>
+            <div class="pv-cell" style="background:rgba(77,255,110,.07);border-top:2px solid rgba(77,255,110,.35);"></div>
+          </div>
+        </div>
+        <div class="card__bar" style="background:var(--neon-red);"></div>
+        <div class="card__inner">
+          <div class="card__tag text-red" style="border-color:var(--neon-red);">Portfolio</div>
+          <div class="card__title">WORK</div>
+          <p class="card__body">Filterable project grid with hover overlays, featured case study and a CTA strip.</p>
+          <div class="card__foot">VIEW PAGE &nbsp;→</div>
+        </div>
+      </a>
+
+      <!-- About -->
+      <a href="about.html" class="card">
+        <div class="card-preview">
+          <div style="display:flex;gap:8px;align-items:flex-start;">
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(77,255,110,.1);border:1px solid rgba(77,255,110,.22);flex-shrink:0;"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:5px;padding-top:3px;">
+              <div class="pv-line pv-line--w80" style="height:8px;background:rgba(255,255,255,.11);"></div>
+              <div class="pv-line pv-line--w55"></div>
+              <div class="pv-line pv-line--w80"></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:4px;margin-top:8px;">
+            <div style="padding:3px 7px;background:rgba(77,255,110,.1);border:1px solid rgba(77,255,110,.3);border-radius:2px;font-family:var(--font-mono);font-size:6px;color:rgba(77,255,110,.7);letter-spacing:.1em;">DESIGN</div>
+            <div style="padding:3px 7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:2px;font-family:var(--font-mono);font-size:6px;color:rgba(255,255,255,.28);letter-spacing:.1em;">CODE</div>
+            <div style="padding:3px 7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:2px;font-family:var(--font-mono);font-size:6px;color:rgba(255,255,255,.28);letter-spacing:.1em;">MOTION</div>
+          </div>
+        </div>
+        <div class="card__bar" style="background:var(--neon-green);"></div>
+        <div class="card__inner">
+          <div class="card__tag text-green" style="border-color:var(--neon-green);">Bio</div>
+          <div class="card__title">ABOUT</div>
+          <p class="card__body">Photo placeholder, bio, skills tags, stat counters and an experience timeline.</p>
+          <div class="card__foot">VIEW PAGE &nbsp;→</div>
+        </div>
+      </a>
+
+      <!-- Blog -->
+      <a href="blog.html" class="card">
+        <div class="card-preview">
+          <div style="display:flex;gap:5px;margin-bottom:7px;">
+            <div style="padding:2px 6px;background:rgba(255,217,61,.15);border:1px solid rgba(255,217,61,.35);border-radius:2px;font-size:6px;font-family:var(--font-mono);color:rgba(255,217,61,.8);letter-spacing:.1em;">ALL</div>
+            <div style="padding:2px 6px;border:1px solid rgba(255,255,255,.1);border-radius:2px;font-size:6px;font-family:var(--font-mono);color:rgba(255,255,255,.22);letter-spacing:.1em;">DESIGN</div>
+            <div style="padding:2px 6px;border:1px solid rgba(255,255,255,.1);border-radius:2px;font-size:6px;font-family:var(--font-mono);color:rgba(255,255,255,.22);letter-spacing:.1em;">CODE</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <div style="display:flex;gap:6px;align-items:center;">
+              <div style="width:2px;height:26px;background:rgba(255,217,61,.55);border-radius:1px;flex-shrink:0;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div class="pv-line pv-line--w55" style="height:7px;background:rgba(255,255,255,.1);"></div>
+                <div class="pv-line pv-line--w80"></div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <div style="width:2px;height:26px;background:rgba(255,217,61,.25);border-radius:1px;flex-shrink:0;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div class="pv-line pv-line--w35" style="height:7px;background:rgba(255,255,255,.1);"></div>
+                <div class="pv-line pv-line--w55"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card__bar" style="background:var(--neon-yellow);"></div>
+        <div class="card__inner">
+          <div class="card__tag text-yellow" style="border-color:var(--neon-yellow);">Editorial</div>
+          <div class="card__title">BLOG</div>
+          <p class="card__body">Category-filtered article list with featured post, dates and read times.</p>
+          <div class="card__foot">VIEW PAGE &nbsp;→</div>
+        </div>
+      </a>
+
+      <!-- Blog Post -->
+      <a href="blog-post.html" class="card">
+        <div class="card-preview">
+          <div style="background:rgba(255,140,61,.1);border-left:2px solid rgba(255,140,61,.55);padding:5px 8px;margin-bottom:8px;border-radius:0 2px 2px 0;font-family:var(--font-mono);font-size:6px;color:rgba(255,140,61,.7);letter-spacing:.08em;">" PULL QUOTE STYLE "</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div class="pv-line pv-line--w80"></div>
+            <div class="pv-line pv-line--w80"></div>
+            <div class="pv-line pv-line--w55"></div>
+          </div>
+          <div style="background:var(--surface-2);border-radius:2px;padding:6px 8px;margin-top:7px;border-left:2px solid rgba(77,255,110,.3);">
+            <div class="pv-line" style="width:55%;background:rgba(77,255,110,.14);height:4px;"></div>
+          </div>
+        </div>
+        <div class="card__bar" style="background:var(--neon-orange);"></div>
+        <div class="card__inner">
+          <div class="card__tag text-orange" style="border-color:var(--neon-orange);">Article</div>
+          <div class="card__title">BLOG POST</div>
+          <p class="card__body">Full article layout — pull quotes, code blocks, sidebar ToC, related posts.</p>
+          <div class="card__foot">VIEW PAGE &nbsp;→</div>
+        </div>
+      </a>
+
+      <!-- Contact -->
+      <a href="contact.html" class="card">
+        <div class="card-preview" style="justify-content:center;">
+          <div style="display:flex;flex-direction:column;gap:6px;width:100%;">
+            <div style="font-family:var(--font-mono);font-size:6px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);">NAME</div>
+            <div style="height:16px;background:rgba(255,255,255,.04);border:1px solid rgba(61,158,255,.18);border-radius:1px;"></div>
+            <div style="font-family:var(--font-mono);font-size:6px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-top:2px;">MESSAGE</div>
+            <div style="height:30px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:1px;"></div>
+          </div>
+        </div>
+        <div class="card__bar" style="background:var(--neon-blue);"></div>
+        <div class="card__inner">
+          <div class="card__tag text-blue" style="border-color:var(--neon-blue);">Connect</div>
+          <div class="card__title">CONTACT</div>
+          <p class="card__body">Terminal-styled form with social links and a two-column split layout.</p>
+          <div class="card__foot">VIEW PAGE &nbsp;→</div>
+        </div>
+      </a>
+
+      <!-- Design system card -->
+      <div class="card" style="border:1px solid rgba(255,255,255,.04);">
+        <div class="card-preview" style="align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+          <div style="font-family:var(--font-display);font-size:30px;letter-spacing:.06em;color:rgba(255,255,255,.07);line-height:1;">SHARED<br>.CSS</div>
+          <div style="display:flex;gap:5px;">
+            <div style="width:11px;height:11px;border-radius:2px;background:var(--neon-green);box-shadow:var(--glow-green);"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:var(--neon-yellow);box-shadow:var(--glow-yellow);"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:var(--neon-red);box-shadow:var(--glow-red);"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:var(--neon-blue);box-shadow:var(--glow-blue);"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:var(--neon-orange);box-shadow:var(--glow-orange);"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:var(--neon-purple);box-shadow:var(--glow-purple);"></div>
+          </div>
+        </div>
+        <div class="card__bar" style="background:var(--rainbow);background-size:200px;animation:rainbow-march 4s linear infinite;"></div>
+        <div class="card__inner">
+          <div class="card__tag" style="color:var(--text-dim);border-color:rgba(255,255,255,.14);">Included</div>
+          <div class="card__title">DESIGN SYSTEM</div>
+          <p class="card__body">One CSS file. All tokens, effects and animations. Change a variable, change everything.</p>
+          <div class="card__foot">shared.css</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ DESIGN SYSTEM PREVIEW ════════════════════════════ -->
+  <section class="section">
+    <div class="section__eyebrow">02 / DESIGN SYSTEM</div>
+    <h2 class="section__title">THE SYSTEM</h2>
+    <p class="section__desc">Every element is controlled by CSS custom properties defined in shared.css — swap colors, fonts and spacing in one place.</p>
+
+    <!-- Colors -->
+    <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;">— NEON PALETTE</div>
+    <div class="swatch-row">
+      <div class="swatch">
+        <div class="swatch__block" style="background:var(--neon-green);box-shadow:var(--glow-green);"></div>
+        <div class="swatch__label">NEON GREEN<br>#4DFF6E</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch__block" style="background:var(--neon-yellow);box-shadow:var(--glow-yellow);"></div>
+        <div class="swatch__label">NEON YELLOW<br>#FFD93D</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch__block" style="background:var(--neon-red);box-shadow:var(--glow-red);"></div>
+        <div class="swatch__label">NEON RED<br>#FF3D3D</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch__block" style="background:var(--neon-blue);box-shadow:var(--glow-blue);"></div>
+        <div class="swatch__label">NEON BLUE<br>#3D9EFF</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch__block" style="background:var(--neon-orange);box-shadow:var(--glow-orange);"></div>
+        <div class="swatch__label">NEON ORANGE<br>#FF8C3D</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch__block" style="background:var(--neon-purple);box-shadow:var(--glow-purple);"></div>
+        <div class="swatch__label">NEON PURPLE<br>#C73DFF</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch__block" style="background:var(--bg);border:1px solid rgba(255,255,255,.08);"></div>
+        <div class="swatch__label">BACKGROUND<br>#0F0F0E</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch__block" style="background:var(--text);"></div>
+        <div class="swatch__label">TEXT CREAM<br>#E4DFD4</div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;margin-top:8px;">— TYPOGRAPHY</div>
+    <div class="grid-3" style="gap:16px;margin-bottom:52px;">
+      <div class="type-card">
+        <div class="type-card__label">DISPLAY — BEBAS NEUE</div>
+        <div style="font-family:var(--font-display);font-size:58px;letter-spacing:.04em;line-height:.9;color:var(--text);">ABCDEF<br>012345</div>
+      </div>
+      <div class="type-card">
+        <div class="type-card__label">MONO — SPACE MONO</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--text-dim);line-height:1.8;">
+          abcdefghijklm<br>
+          nopqrstuvwxyz<br>
+          <span class="text-green">0 1 2 3 4 5 6 7 8 9</span><br>
+          <span style="color:var(--text-muted);">! @ # $ % ^ &amp; * ( )</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-card__label">BODY — BARLOW CONDENSED</div>
+        <div style="font-family:var(--font-body);font-size:17px;color:var(--text-dim);line-height:1.65;font-weight:400;">
+          The quick brown fox jumps over the lazy dog. Built for legibility at all sizes — from captions to callouts.
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive elements preview -->
+    <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:20px;">— INTERACTIVE ELEMENTS</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+      <button class="btn btn-primary">PRIMARY BUTTON</button>
+      <button class="btn btn-outline">OUTLINE BUTTON</button>
+      <button class="btn btn-red">ALERT BUTTON</button>
+      <span class="tag active">ACTIVE TAG</span>
+      <span class="tag">FILTER TAG</span>
+      <span class="tag">ANOTHER TAG</span>
+    </div>
+  </section>
+
+  <div class="rainbow-bar rainbow-bar--thick"></div>
+
+  <!-- ══ FOOTER ════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="site-footer__brand">SIGNAL</div>
+    <div class="site-footer__copy">© 2024 · CRT Template · Built on shared.css</div>
+    <nav class="site-footer__links">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+  <script>
+  /* ══ CRT STARTUP INTRO CONTROLLER ══════════════════════════
+     First visit: plays full CRT power-on sequence (~4s), then
+     sets localStorage key so it never plays again automatically.
+
+     SEQUENCE:
+       T+300   CRT line expands  — heavy static + white flash
+       T+900   Static dims       — UI chrome fades in
+       T+1000  Logo wrapper visible
+       T+1100  Center dot        — arc origin point
+       T+1260  Arc 1 draws in
+       T+1570  Arc 2 draws in
+       T+1930  Arc 3 draws in
+       T+2120  SIGNAL wordmark fades in
+       T+2520  Tagline + status → 'SIGNAL READY'
+       T+2780  Scan sweep line crosses screen
+       T+3200  Power-off flash
+       T+3340  Screen collapses → thin horizontal line
+       T+3660  Line snaps to centre point → gone
+       T+3900  Overlay removed, localStorage.setItem('signal_intro_seen','1')
+
+     TO REPLAY:
+       localStorage.removeItem('signal_intro_seen')  →  reload
+  ══════════════════════════════════════════════════════════ */
+  (function () {
+    var intro = document.getElementById('crt-intro');
+    if (!intro) return;
+
+    /* Skip on subsequent visits */
+    if (localStorage.getItem('signal_intro_seen') === '1') {
+      intro.remove();
+      return;
+    }
+
+    /* ── Element refs ── */
+    var screen   = document.getElementById('crt-screen');
+    var canvas   = document.getElementById('crt-canvas');
+    var ctx      = canvas.getContext('2d');
+    var content  = document.getElementById('intro-content');
+    var wordmark = document.getElementById('intro-wordmark');
+    var tagline  = document.getElementById('intro-tagline');
+    var recEl    = document.getElementById('intro-rec');
+    var statusEl = document.getElementById('intro-status');
+    var tcEl     = document.getElementById('intro-timecode');
+    var sweep    = document.getElementById('intro-sweep');
+    var arcDot   = document.getElementById('arc-dot');
+    var arc1     = document.getElementById('arc1');
+    var arc2     = document.getElementById('arc2');
+    var arc3     = document.getElementById('arc3');
+    var gbs      = [document.getElementById('gb1'),
+                    document.getElementById('gb2'),
+                    document.getElementById('gb3')];
+
+    /* ── Canvas static noise ── */
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var staticOn = false, staticRaf = null;
+
+    function drawStatic(intensity) {
+      var w = canvas.width, h = canvas.height;
+      var id = ctx.createImageData(w, h), d = id.data;
+      for (var i = 0; i < d.length; i += 4) {
+        var on = Math.random() < intensity;
+        var v  = on ? ((Math.random() * 200 + 55) | 0) : 0;
+        d[i] = v; d[i+1] = v; d[i+2] = v;
+        d[i+3] = on ? ((v * 0.74) | 0) : 0;
+      }
+      ctx.putImageData(id, 0, 0);
+    }
+
+    function startStatic(intensity, fps) {
+      staticOn = true;
+      var ms = 1000 / fps, last = 0;
+      (function loop(ts) {
+        if (!staticOn) return;
+        if (ts - last > ms) { drawStatic(intensity); last = ts; }
+        staticRaf = requestAnimationFrame(loop);
+      })(0);
+    }
+
+    function stopStatic() {
+      staticOn = false;
+      cancelAnimationFrame(staticRaf);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    /* ── Helpers ── */
+    function show(el, dur, extra) {
+      el.style.transition = 'opacity ' + (dur || 0.3) + 's' + (extra ? ', ' + extra : '');
+      el.style.opacity = '1';
+    }
+    function go(ms, fn) { return setTimeout(fn, ms); }
+
+    /* ══ ANIMATION SEQUENCE ════════════════════════════════ */
+
+    /* T+300 — CRT line expands */
+    go(300, function () {
+      canvas.style.opacity = '0.85';
+      startStatic(0.44, 24);
+
+      screen.style.transition = 'transform 0.56s cubic-bezier(0.23,1,0.32,1), filter 0.56s ease';
+      screen.style.filter     = 'brightness(12) saturate(0)';
+      screen.style.transform  = 'scaleY(1)';
+
+      /* Glitch bars — random horizontal white stripes */
+      gbs.forEach(function (gb, i) {
+        gb.style.top = (8 + Math.random() * 78) + '%';
+        setTimeout(function () {
+          gb.style.transition = 'opacity 0.04s';
+          gb.style.opacity = '1';
+          setTimeout(function () { gb.style.opacity = '0'; }, 65);
+        }, i * 52);
+      });
+    });
+
+    go(600, function () { screen.style.filter = 'brightness(1.6) saturate(0.3)'; });
+    go(860, function () { screen.style.filter = 'brightness(1) saturate(1)'; });
+
+    /* T+900 — static dims, UI chrome appears */
+    go(900, function () {
+      stopStatic();
+      startStatic(0.065, 18);
+      canvas.style.transition = 'opacity 0.5s';
+      canvas.style.opacity    = '0.16';
+      show(recEl,    0.4);
+      show(statusEl, 0.4);
+      show(tcEl,     0.4);
+    });
+
+    /* T+1000 — logo wrapper */
+    go(1000, function () {
+      content.style.transition = 'opacity 0.22s';
+      content.style.opacity    = '1';
+    });
+
+    /* T+1100 — centre dot */
+    go(1100, function () {
+      arcDot.style.transition = 'opacity 0.2s';
+      arcDot.style.opacity    = '1';
+    });
+
+    /* T+1260 — arc 1 draws */
+    go(1260, function () {
+      arc1.style.transition      = 'stroke-dashoffset 0.38s ease-out';
+      arc1.style.strokeDashoffset = '0';
+    });
+
+    /* T+1570 — arc 2 draws */
+    go(1570, function () {
+      arc2.style.transition      = 'stroke-dashoffset 0.44s ease-out';
+      arc2.style.strokeDashoffset = '0';
+    });
+
+    /* T+1930 — arc 3 draws */
+    go(1930, function () {
+      arc3.style.transition      = 'stroke-dashoffset 0.52s ease-out';
+      arc3.style.strokeDashoffset = '0';
+    });
+
+    /* T+2120 — wordmark */
+    go(2120, function () {
+      wordmark.style.transition  = 'opacity 0.55s ease-out, transform 0.55s ease-out, text-shadow 0.55s';
+      wordmark.style.opacity     = '1';
+      wordmark.style.transform   = 'translateY(0)';
+      wordmark.style.textShadow  = '0 0 44px rgba(228,223,212,0.13)';
+    });
+
+    /* T+2520 — tagline + ready state */
+    go(2520, function () {
+      show(tagline, 0.4);
+      statusEl.textContent    = 'SIGNAL  READY';
+      statusEl.style.color    = 'rgba(77,255,110,0.58)';
+      statusEl.style.textShadow = '0 0 12px rgba(77,255,110,0.4)';
+    });
+
+    /* T+2780 — scan sweep line */
+    go(2780, function () {
+      stopStatic();
+      canvas.style.opacity    = '0';
+      sweep.style.opacity     = '1';
+      sweep.style.transition  = 'top 0.72s linear';
+      sweep.style.top         = '100%';
+    });
+
+    /* T+3200 — power-off flash */
+    go(3200, function () {
+      screen.style.transition = 'filter 0.07s';
+      screen.style.filter     = 'brightness(7) saturate(0)';
+    });
+
+    /* T+3340 — collapse to thin horizontal line */
+    go(3340, function () {
+      screen.style.transition = 'transform 0.30s ease-in, filter 0.15s';
+      screen.style.transform  = 'scaleY(0.003)';
+      screen.style.filter     = 'brightness(3)';
+    });
+
+    /* T+3660 — line collapses to centre point */
+    go(3660, function () {
+      screen.style.transition = 'transform 0.22s ease-in, filter 0.12s';
+      screen.style.transform  = 'scaleY(0.003) scaleX(0)';
+      screen.style.filter     = 'brightness(9)';
+    });
+
+    /* T+3900 — remove overlay + mark seen */
+    go(3900, function () {
+      intro.style.transition = 'opacity 0.12s';
+      intro.style.opacity    = '0';
+      setTimeout(function () {
+        intro.remove();
+        /* ── Mark as seen ──────────────────────────────────
+           The intro will NOT play again on this device.
+           To force a replay, run in DevTools console:
+             localStorage.removeItem('signal_intro_seen')
+           then reload the page.
+        ─────────────────────────────────────────────────── */
+        localStorage.setItem('signal_intro_seen', '1');
+      }, 130);
+    });
+
+    /* ── Timecode counter ── */
+    var t0 = Date.now();
+    var tcTimer = setInterval(function () {
+      var ms = Date.now() - t0;
+      var s  = Math.floor(ms / 1000) % 60;
+      var f  = Math.floor((ms % 1000) / 33.33) % 30;
+      tcEl.textContent = 'CH.01 · 00:00:' +
+        String(s).padStart(2, '0') + ':' +
+        String(f).padStart(2, '0');
+      if (ms > 4200) clearInterval(tcTimer);
+    }, 33);
+
+  }());
+  </script>
+</body>
+</html>

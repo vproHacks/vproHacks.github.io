@@ -1,0 +1,51 @@
+title: Vraj Prajapati
+email: vrajip@gmail.com
+description: >-
+  Portfolio and personal website of Vraj Prajapati — Engineering Science student at University of Toronto,
+  ML Compiler Engineer Intern at Tenstorrent, and passionate maker of robots, AI systems, and hardware designs.
+github_username: vproHacks
+url: "https://vprohacks.github.io"
+baseurl: ""
+
+markdown: kramdown
+permalink: /:categories/:title/
+
+include:
+  - _pages
+
+exclude:
+  - retro-site-template
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+author:
+  name: "Vraj Prajapati"
+  avatar: "/assets/images/vraj-pfp.png"
+  bio: "Engineering Science student at University of Toronto, passionate maker of robots, AI systems, and hardware designs."
+  location: "Toronto, ON"
+  links:
+    - label: "Email"
+      url: "mailto:vrajip@gmail.com"
+    - label: "X"
+      url: "https://x.com/vpro8725"
+    - label: "GitHub"
+      url: "https://github.com/vproHacks"
+    - label: "LinkedIn"
+      url: "https://www.linkedin.com/in/vraj8725/"
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: page
