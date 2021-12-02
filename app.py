@@ -7,6 +7,9 @@ FREEZE = True
 app = Flask(__name__)
 freezer = Freezer(app)
 
+app.config['FREEZER_DESTINATION'] = './docs'
+# app.config['FREEZER_DEFAULT_MIMETYPE'] = 'text/html'
+
 # Load Projects
 project_data_files = ['./projects/' + x for x in os.listdir('./projects/') if x.endswith('.json')]
 project_list = []
@@ -20,11 +23,11 @@ for data_file in project_data_files:
 
 @app.route('/')
 def index():
-    return render_template('index.html', projects=project_list)
+    return render_template('index.html', projects = project_list)
 
 @app.route('/project/<project_name>')
 def project(project_name=''):
-    return render_template('project.html', project=projects[project_name])
+    return render_template('project.html', project = projects[project_name])
 
 @freezer.register_generator
 def project():
