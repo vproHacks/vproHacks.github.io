@@ -27,7 +27,7 @@ for data_file in project_data_files:
 def index():
     return render_template('index.html', projects = project_list)
 
-@app.route('/praxis')
+@app.route('/praxis.html')
 def praxis():
     return render_template('praxis.html')
 
