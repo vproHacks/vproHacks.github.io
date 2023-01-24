@@ -11,8 +11,8 @@
 		<title>Story by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="{{ url_for('static', filename='praxis_css/main.css') }}" />
-		<noscript><link rel="stylesheet" href="{{ url_for('static', filename='css/noscript.css') }}" /></noscript>
+		<link rel="stylesheet" href="/static/praxis_css/main.css" />
+		<noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
 
@@ -29,7 +29,7 @@
 							</ul>
 						</div>
 						<div class="image">
-							<img src="{{ url_for('static', filename='praxis_images/banner.jpg') }}" alt="" />
+							<img src="/static/praxis_images/banner.jpg" alt="" />
 						</div>
 					</section>
 
@@ -40,7 +40,7 @@
 							<p>For almost all of my life I have been a student, learning from others to better my understanding of the world and how I can make my mark on it. Academically I have always strived to understand as much as possible, furthering my understanding of how the world works. However, I have also strived to be a student of experience, someone who learns by doing. I have pushed myself into a myriad of extra-curriculars, even now while in University, I strive to learn by doing what I love and proving this with my academic understanding. I value intelligence,and the pursuit of intelligence, I strive to learn as much as possible when engineering, always embarking on new adventures.</p>
 						</div>
 						<div class="image">
-							<img src="{{ url_for('static', filename='praxis_images/spotlight01.jpeg') }}" alt="" />
+							<img src="/static/praxis_images/spotlight01.jpeg" alt="" />
 						</div>
 					</section>
 
@@ -51,7 +51,7 @@
 							<p>Friendships are something I cherish deeply, I strive not for a large number of friends but connections that I can partake in at a deeper level. Being a friend has taken me to express myself in so many ways. I have begun to pursue personal fitness, cooking, playing the guitar, and so many unique ways of having fun with those that I love. I value companionship and friends in my life, people that I can connect with are people that I work efficiently with, I show a very large portion of my friendship through work. Experiences like FRC robotics have shaped how I work with friends and pour my soul into some project while enjoying companionship through the suffering.</p>
 						</div>
 						<div class="image">
-							<img src="{{ url_for('static', filename='praxis_images/spotlight02.jpg') }} " alt="" />
+							<img src="/static/praxis_images/spotlight02.jpg " alt="" />
 						</div>
 					</section>
 
@@ -62,7 +62,7 @@
 							<p>My family has always been one of the greatest values in my life, I deeply value a connection to those I love. I reflect this in myself by being someone who prioritizes time with those that I love over all else. As an engineer, I have pursued this by engineering things that I know will benefit some users but also give them the option to maintain this quintessential connection with their loved ones. I pursue engineering that can sustain people’s ability to love each other and their families.</p>
 						</div>
 						<div class="image">
-							<img src="{{ url_for('static', filename='praxis_images/spotlight03.jpg') }}" alt="" />
+							<img src="/static/praxis_images/spotlight03.jpg" alt="" />
 						</div>
 					</section>
 
@@ -337,13 +337,13 @@
 			</div>
 
 		<!-- Scripts -->
-			<script src="{{ url_for('static', filename='praxis_js/jquery.min.js') }}"></script>
-			<script src="{{ url_for('static', filename='praxis_js/jquery.scrollex.min.js') }}"></script>
-			<script src="{{ url_for('static', filename='praxis_js/jquery.scrolly.min.js') }}"></script>
-			<script src="{{ url_for('static', filename='praxis_js/browser.min.js') }}"></script>
-			<script src="{{ url_for('static', filename='praxis_js/breakpoints.min.js') }}"></script>
-			<script src="{{ url_for('static', filename='praxis_js/util.js') }}"></script>
-			<script src="{{ url_for('static', filename='praxis_js/main.js') }}"></script>
+			<script src="/static/praxis_js/jquery.min.js"></script>
+			<script src="/static/praxis_js/jquery.scrollex.min.js"></script>
+			<script src="/static/praxis_js/jquery.scrolly.min.js"></script>
+			<script src="/static/praxis_js/browser.min.js"></script>
+			<script src="/static/praxis_js/breakpoints.min.js"></script>
+			<script src="/static/praxis_js/util.js"></script>
+			<script src="/static/praxis_js/main.js"></script>
 
 	</body>
 </html>
