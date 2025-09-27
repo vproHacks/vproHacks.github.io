@@ -1,0 +1,9 @@
+main:
+  - title: "About"
+    url: /about/
+  - title: "Projects"
+    url: /categories/projects/
+  - title: "Blog"
+    url: /categories/blog/
+  - title: "Resume"
+    url: /assets/Vraj Prajapati - Resume.pdf
