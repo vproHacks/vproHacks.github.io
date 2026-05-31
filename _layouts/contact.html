@@ -1,0 +1,63 @@
+---
+layout: default
+---
+<header class="page-header">
+  <h1 class="page-header__title">CONTACT</h1>
+  <p class="page-header__desc">Interested in robotics, ML systems, or hardware? Reach out.</p>
+</header>
+
+<div class="rainbow-bar"></div>
+
+<section class="section">
+  <div class="contact-layout">
+    <div>
+      <h2 class="contact-info__title">
+        LET'S<br>BUILD<br><span class="text-green">TOGETHER</span>
+      </h2>
+
+      <p class="contact-info__body">
+        Whether it's compiler engineering, autonomous systems, or hackathon-grade prototypes,
+        send a message and I'll get back to you.
+      </p>
+
+      <div class="contact-details">
+        <div class="contact-row">
+          <div class="contact-row__lbl">EMAIL</div>
+          <div class="contact-row__val"><a href="mailto:{{ site.email }}">{{ site.email }}</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-row__lbl">LOCATION</div>
+          <div class="contact-row__val">{{ site.author.location }}</div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-row__lbl">RESUME</div>
+          <div class="contact-row__val"><a href="{{ '/assets/Vraj Prajapati - Resume.pdf' | relative_url }}">Download PDF</a></div>
+        </div>
+      </div>
+
+      <div class="social-list">
+        {% for link in site.author.links %}
+          <a href="{{ link.url }}" class="social-item"{% if link.url contains 'http' %} target="_blank" rel="noopener noreferrer"{% endif %}>
+            <span class="social-item__platform">{{ link.label }}</span>
+            {{ link.url | replace: 'https://', '' | replace: 'http://', '' | replace: 'mailto:', '' | truncate: 36 }}
+            <span class="social-item__arrow">↗</span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border-radius:var(--r-sm);padding:44px;border:1px solid rgba(255,255,255,.04);">
+      <div style="font-family:var(--font-display);font-size:38px;letter-spacing:.04em;color:var(--text);margin-bottom:24px;">QUICK LINKS</div>
+      <p style="font-family:var(--font-mono);font-size:13px;color:var(--text-dim);line-height:1.78;margin-bottom:32px;">
+        Email is the fastest way to reach me. You can also connect on GitHub or LinkedIn.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <a href="mailto:{{ site.email }}" class="btn btn-primary" style="justify-content:center;">EMAIL ME &nbsp;→</a>
+        <a href="https://github.com/{{ site.github_username }}" class="btn btn-outline" style="justify-content:center;">GITHUB ↗</a>
+        <a href="{{ '/work/' | relative_url }}" class="btn btn-outline" style="justify-content:center;">VIEW PORTFOLIO</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rainbow-bar"></div>

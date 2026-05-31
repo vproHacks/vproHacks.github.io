@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Art of the Retro Rebrand — SIGNAL</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ── BLOG POST PAGE ── */
+    .post-layout {
+      display: grid;
+      grid-template-columns: 1fr 268px;
+      gap: 72px;
+      align-items: start;
+    }
+
+    /* Article typography */
+    .article p {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 26px;
+    }
+    .article h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px,5vw,56px);
+      letter-spacing: .02em;
+      color: var(--text);
+      margin: 56px 0 20px;
+      line-height: .9;
+    }
+    .article h3 {
+      font-family: var(--font-display);
+      font-size: 34px;
+      letter-spacing: .02em;
+      color: var(--text);
+      margin: 40px 0 14px;
+    }
+
+    /* Pull quote */
+    .pullquote {
+      border-left: 3px solid var(--neon-yellow);
+      padding: 22px 30px;
+      margin: 40px 0;
+      background: rgba(255,217,61,.038);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    }
+    .pullquote__text {
+      font-family: var(--font-display);
+      font-size: clamp(24px,3vw,34px);
+      letter-spacing: .02em;
+      color: var(--neon-yellow);
+      text-shadow: var(--glow-text-yellow);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .pullquote__attr {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,.055);
+      border-left: 3px solid var(--neon-green);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+      padding: 24px 28px;
+      margin: 30px 0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.85;
+      overflow-x: auto;
+      position: relative;
+    }
+    .code-block::before {
+      content: 'CSS';
+      position: absolute;
+      top: 12px; right: 16px;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .15em;
+      color: var(--text-muted);
+    }
+    .kw  { color: var(--neon-purple); }
+    .val { color: var(--neon-green); }
+    .cmt { color: var(--text-muted); font-style: italic; }
+    .prop{ color: var(--neon-blue); }
+
+    /* Image placeholder */
+    .art-img {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      min-height: 280px;
+      margin: 38px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .art-img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        135deg, rgba(255,255,255,.01) 0px, rgba(255,255,255,.01) 1px,
+        transparent 1px, transparent 14px
+      );
+    }
+    .art-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,.055) 2px, rgba(0,0,0,.055) 3px
+      );
+    }
+    .art-img__label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,.07);
+      padding: 8px 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: sticky;
+      top: calc(var(--nav-h) + 28px);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .sidebar-box {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.04);
+    }
+    .sidebar-box__head {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.055);
+    }
+    .toc-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      cursor: pointer;
+      transition: color .2s;
+    }
+    .toc-link:last-child { border-bottom: none; }
+    .toc-link::before { content: '—'; color: var(--text-muted); font-size: 8px; }
+    .toc-link:hover { color: var(--neon-yellow); }
+
+    /* Meta bar */
+    .post-meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(255,255,255,.055);
+      margin-bottom: 52px;
+    }
+    .meta-item {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .meta-item span { color: var(--text-dim); }
+
+    /* Related posts */
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .related-card {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      padding: 22px;
+      border-top: 2px solid;
+      transition: transform .2s;
+      display: block;
+      color: inherit;
+    }
+    .related-card:hover { transform: translateY(-4px); }
+    .related-card__cat {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .related-card__title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: .02em;
+      line-height: 1.0;
+      color: var(--text);
+    }
+
+    @media (max-width: 960px) {
+      .post-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="crt-nav">
+    <a href="index.html" class="crt-nav__logo">
+      <span class="crt-nav__dot"></span>
+      <div>
+        <div>SIGNAL</div>
+        <div class="crt-nav__logo-sub">// CRT TEMPLATE</div>
+      </div>
+    </a>
+    <ul class="crt-nav__links">
+      <li><a href="work.html">WORK</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="blog.html" class="active">BLOG</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+    </ul>
+  </nav>
+
+  <!-- POST HEADER -->
+  <header style="padding:calc(var(--nav-h) + 64px) 80px 0;border-bottom:1px solid rgba(255,255,255,.055);">
+    <div style="max-width:860px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap;">
+        <a href="blog.html" style="font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);transition:color .2s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">← BACK TO BLOG</a>
+        <span style="color:var(--text-muted);">·</span>
+        <span class="tag active" style="cursor:default;">DESIGN</span>
+      </div>
+
+      <h1 style="font-family:var(--font-display);font-size:clamp(52px,9vw,118px);letter-spacing:.02em;line-height:.87;color:var(--text);margin-bottom:30px;">
+        THE ART OF<br>THE <span class="text-yellow">RETRO</span><br>REBRAND
+      </h1>
+
+      <div class="post-meta-bar">
+        <div class="meta-item">DATE <span>MAY 14, 2024</span></div>
+        <div class="meta-item">READ TIME <span>8 MINUTES</span></div>
+        <div class="meta-item">AUTHOR <span>SIGNAL STUDIO</span></div>
+        <div class="meta-item">WORDS <span>~1,400</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="rainbow-bar"></div>
+
+  <!-- POST BODY -->
+  <section class="section">
+    <div class="post-layout">
+
+      <!-- Article -->
+      <article class="article">
+        <p>
+          There's something happening in design right now that feels both nostalgic and genuinely new. Across social media, a generation of creators is taking the world's most recognizable brands — the Googles, the Netflixes, the Instagrams — and reimagining them through the lens of 1980s CRT television. The results are remarkable.
+        </p>
+        <p>
+          The key figure in this movement is <strong style="color:var(--text);">@KXDGraphics</strong>, whose retro-futuristic rebrand work has accumulated millions of views. But what makes these designs resonate so deeply, and what can the rest of us learn from them?
+        </p>
+
+        <div class="art-img" style="min-height:320px;">
+          <div class="art-img__label">[ ARTICLE IMAGE — 1600 × 900px ]</div>
+        </div>
+
+        <h2>WHY CRT WORKS</h2>
+        <p>
+          The CRT monitor wasn't just a display technology — it was a complete visual culture. The phosphor glow, the scanline texture, the gentle rounding of corners, the way colors bled into each other at the edges. These weren't bugs. They were, in retrospect, a deeply coherent aesthetic.
+        </p>
+        <p>
+          Today's screens are perfect. Every pixel lands exactly where it should. The result is a visual flatness that, paradoxically, feels less real than the imperfect analog image it replaced. We've traded warmth for precision.
+        </p>
+
+        <div class="pullquote">
+          <div class="pullquote__text">"THE SOFT CRT BLUR PULLS EVERYTHING TOGETHER, GIVING EACH LOGO THAT SLIGHTLY IMPERFECT, FLICKERING FEEL."</div>
+          <div class="pullquote__attr">— Bored Panda, April 2026</div>
+        </div>
+
+        <p>
+          What KXD understood before most is that the imperfections <em style="color:var(--text);">are</em> the point. The scanlines aren't a flaw to be corrected — they're a texture that gives the image physical presence. The chromatic aberration isn't a defect — it's depth.
+        </p>
+
+        <h2>IMPLEMENTING THE STYLE</h2>
+        <p>
+          The CRT aesthetic breaks down into reproducible components: scanlines, phosphor glow, chromatic aberration and the characteristic palette of early television — deep blacks, vibrant primaries and that distinctive warm white that only CRT phosphors produce.
+        </p>
+        <p>
+          In CSS, a convincing scanline layer needs only a repeating gradient. The trick is keeping the opacity barely perceptible — enough to feel like a texture, not a filter:
+        </p>
+
+        <div class="code-block">
+          <span class="cmt">/* Scanlines — keep opacity below 0.08 */</span><br>
+          <span class="kw">body</span>::after {<br>
+          &nbsp;&nbsp;<span class="prop">content</span>: <span class="val">''</span>;<br>
+          &nbsp;&nbsp;<span class="prop">position</span>: <span class="val">fixed</span>;<br>
+          &nbsp;&nbsp;<span class="prop">inset</span>: <span class="val">0</span>;<br>
+          &nbsp;&nbsp;<span class="prop">background</span>: <span class="val">repeating-linear-gradient(</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="val">0deg,</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="val">transparent 2px,</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="val">rgba(0,0,0,0.055) 3px</span><br>
+          &nbsp;&nbsp;<span class="val">)</span>;<br>
+          &nbsp;&nbsp;<span class="prop">pointer-events</span>: <span class="val">none</span>;<br>
+          &nbsp;&nbsp;<span class="prop">z-index</span>: <span class="val">9999</span>;<br>
+          }
+        </div>
+
+        <h3>THE TYPOGRAPHY TREATMENT</h3>
+        <p>
+          One of the most distinctive elements of the KXD style is the typographic hierarchy: massive, heavy display type for the primary word, paired with widely-spaced small caps for the subtitle below. The scale contrast is enormous — the headline might be 8–10× the size of the label beneath it.
+        </p>
+        <p>
+          This mirrors how television graphics were composed in the 80s: bold and readable at distance, designed for a screen where fine detail was lost to scanline blur. Bebas Neue, Barlow Condensed Black and similar compressed display faces work particularly well. For the widest letter-spacing on subtitles, target 0.35–0.5em.
+        </p>
+
+        <div class="art-img">
+          <div class="art-img__label">[ TYPOGRAPHY SPECIMEN — 1600 × 600px ]</div>
+        </div>
+
+        <h2>COLOR &amp; THE RAINBOW BAR</h2>
+        <p>
+          The rainbow horizontal stripe is the single most recognizable element in KXD's CRT icon pack. In the context of 1980s television, these rainbow color bars were the broadcast standard test pattern — used to calibrate screens before content played. Repurposed as a design element, they immediately signal the aesthetic.
+        </p>
+        <p>
+          In web design, a 3–5px animated rainbow bar used as a section separator or page accent is immediately recognizable. Keep the saturation high and the opacity full — these bars work because the colors feel genuinely <em style="color:var(--text);">on</em>, like a lit display, not a printed ink.
+        </p>
+
+        <h2>MAKING IT YOUR OWN</h2>
+        <p>
+          The danger with any trend is imitation without understanding. The best retro-influenced work isn't costume design — it's a genuine reckoning with what made those aesthetics effective, translated into something new. Study the originals. Understand the constraints that created them. Then break the rules deliberately.
+        </p>
+        <p>
+          The phosphor glow, the scanlines, the rainbow stripes — none of these are mandatory. Use what serves the concept and discard the rest. The goal is to capture a <em style="color:var(--text);">feeling</em>, not replicate a technology. The best CRT-inspired designs feel like they could only exist now — aware of history, but not trapped in it.
+        </p>
+
+        <!-- Tags -->
+        <div style="margin-top:52px;padding-top:32px;border-top:1px solid rgba(255,255,255,.055);">
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">TAGGED</div>
+          <div class="tags">
+            <span class="tag">CRT Design</span>
+            <span class="tag">Typography</span>
+            <span class="tag">Retro Aesthetic</span>
+            <span class="tag">CSS Effects</span>
+            <span class="tag">Brand Identity</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-box">
+          <div class="sidebar-box__head">TABLE OF CONTENTS</div>
+          <div class="toc-link">Why CRT Works</div>
+          <div class="toc-link">Implementing the Style</div>
+          <div class="toc-link">The Typography Treatment</div>
+          <div class="toc-link">Color &amp; the Rainbow Bar</div>
+          <div class="toc-link">Making It Your Own</div>
+        </div>
+
+        <div class="sidebar-box">
+          <div class="sidebar-box__head">ARTICLE INFO</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">PUBLISHED</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);">MAY 2024</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">READ TIME</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);">8 MIN</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">CATEGORY</span>
+              <span class="text-yellow" style="font-family:var(--font-mono);font-size:10px;">DESIGN</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="contact.html" class="btn btn-primary" style="width:100%;justify-content:center;text-align:center;">WORK TOGETHER &nbsp;→</a>
+      </aside>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- RELATED -->
+  <section class="section">
+    <div class="section__eyebrow">MORE READING</div>
+    <h2 class="section__title" style="margin-bottom:32px;">RELATED POSTS</h2>
+    <div class="related-grid">
+      <a href="blog-post.html" class="related-card" style="border-top-color:var(--neon-yellow);">
+        <div class="related-card__cat text-yellow">Design</div>
+        <div class="related-card__title">TYPOGRAPHY IN THE CRT ERA</div>
+      </a>
+      <a href="blog-post.html" class="related-card" style="border-top-color:var(--neon-green);">
+        <div class="related-card__cat text-green">Code</div>
+        <div class="related-card__title">CSS GLITCH EFFECTS THAT ACTUALLY WORK</div>
+      </a>
+      <a href="blog-post.html" class="related-card" style="border-top-color:var(--neon-orange);">
+        <div class="related-card__cat text-orange">Culture</div>
+        <div class="related-card__title">WHY NOSTALGIA IS A DESIGN SUPERPOWER</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="rainbow-bar"></div>
+
+  <footer class="site-footer">
+    <div class="site-footer__brand">SIGNAL</div>
+    <div class="site-footer__copy">© 2024 · All rights reserved</div>
+    <nav class="site-footer__links">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+
+</body>
+</html>

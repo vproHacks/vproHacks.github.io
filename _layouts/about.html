@@ -1,0 +1,124 @@
+---
+layout: default
+---
+<header class="page-header">
+  <h1 class="page-header__title">
+    VRAJ<br>
+    <span class="text-green">PRAJAPATI</span>
+  </h1>
+  <p class="page-header__desc">
+    Engineering Science student at the University of Toronto. ML compiler engineer, robotics builder,
+    and hardware tinkerer — making robots, AI systems, and things that move.
+  </p>
+</header>
+
+<div class="rainbow-bar"></div>
+
+<section class="section">
+  <div class="about-grid">
+    <div class="photo-wrap">
+      <div class="photo-box">
+        <span class="corner corner--tl"></span>
+        <span class="corner corner--tr"></span>
+        <span class="corner corner--bl"></span>
+        <span class="corner corner--br"></span>
+        <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}">
+      </div>
+      <div class="photo-caption">
+        <div class="photo-caption__name">{{ site.author.name | upcase }}</div>
+      </div>
+    </div>
+
+    <div>
+      <h2 style="font-family:var(--font-display);font-size:clamp(44px,6vw,68px);letter-spacing:.02em;line-height:.9;margin-bottom:28px;">
+        ENGINEER &amp;<br><span class="text-green">MAKER</span>
+      </h2>
+
+      <div style="display:flex;flex-direction:column;gap:18px;font-family:var(--font-mono);font-size:13px;color:var(--text-dim);line-height:1.82;margin-bottom:38px;">
+        {{ content }}
+      </div>
+
+      <div class="tags" style="margin-bottom:40px;">
+        <span class="tag active">C / C++</span>
+        <span class="tag active">Python</span>
+        <span class="tag">LLVM / MLIR</span>
+        <span class="tag">SystemVerilog</span>
+        <span class="tag">ROS2</span>
+        <span class="tag">Computer Vision</span>
+        <span class="tag">Embedded Systems</span>
+        <span class="tag">Full-Stack</span>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="{{ '/work/' | relative_url }}" class="btn btn-primary">VIEW MY WORK &nbsp;→</a>
+        <a href="{{ '/contact/' | relative_url }}" class="btn btn-outline">GET IN TOUCH</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section--sm" style="padding-top:56px;padding-bottom:56px;">
+  <div class="stats-grid">
+    <div class="stat-cell">
+      <div class="stat-cell__num text-green">2027</div>
+      <div class="stat-cell__label">Expected Graduation</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell__num">3+</div>
+      <div class="stat-cell__label">Hackathon Projects</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell__num text-yellow">1</div>
+      <div class="stat-cell__label">ML Compiler Internship</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell__num">2</div>
+      <div class="stat-cell__label">Student Team Director Roles</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <h2 class="section__title">EXPERIENCE</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-item__year">2024<br>2025</div>
+      <div>
+        <div class="tl-item__role">ML COMPILER ENGINEER INTERN</div>
+        <div class="tl-item__co">Tenstorrent — Austin, TX</div>
+        <p class="tl-item__desc">Developed compiler optimizations for AI hardware, working with LLVM and MLIR on machine learning workloads.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-item__year">2023<br>NOW</div>
+      <div>
+        <div class="tl-item__role">TECHNICAL DIRECTOR</div>
+        <div class="tl-item__co">IEEE University of Toronto</div>
+        <p class="tl-item__desc">Leading ASIC design initiatives and mixed-signal IC development for the student branch hardware team.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-item__year">2023<br>NOW</div>
+      <div>
+        <div class="tl-item__role">PROJECT DIRECTOR</div>
+        <div class="tl-item__co">UTMIST — Spiking Neural Networks</div>
+        <p class="tl-item__desc">Research on neuromorphic computing, spiking neural networks, and memristor-based hardware implementations.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-item__year">2023<br>2027</div>
+      <div>
+        <div class="tl-item__role">B.ASC ENGINEERING SCIENCE</div>
+        <div class="tl-item__co">University of Toronto — ECE</div>
+        <p class="tl-item__desc">Electrical &amp; Computer Engineering focus. Building across hardware, software, and AI — expected graduation May 2027.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rainbow-bar"></div>

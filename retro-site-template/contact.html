@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — SIGNAL</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ── CONTACT PAGE ── */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 88px;
+      align-items: start;
+    }
+
+    /* Availability pill */
+    .avail-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--neon-green);
+      border: 1px solid rgba(77,255,110,.3);
+      padding: 6px 14px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+    .avail-pill__dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      box-shadow: var(--glow-green);
+      animation: blink 2s step-start infinite;
+    }
+
+    .contact-info__title {
+      font-family: var(--font-display);
+      font-size: clamp(44px,6vw,72px);
+      letter-spacing: .02em;
+      line-height: .88;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .contact-info__body {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.78;
+      margin-bottom: 40px;
+    }
+
+    /* Contact details */
+    .contact-details { display: flex; flex-direction: column; gap: 14px; margin-bottom: 48px; }
+    .contact-row {
+      display: flex;
+      gap: 20px;
+      align-items: baseline;
+    }
+    .contact-row__lbl {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      min-width: 84px;
+      flex-shrink: 0;
+    }
+    .contact-row__val {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .contact-row__val a {
+      color: var(--neon-green);
+      text-shadow: var(--glow-text-green);
+      transition: opacity .2s;
+    }
+    .contact-row__val a:hover { opacity: .7; }
+
+    /* Social links */
+    .social-list { display: flex; flex-direction: column; }
+    .social-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      transition: all .18s;
+      cursor: pointer;
+    }
+    .social-item:first-child { border-top: 1px solid rgba(255,255,255,.05); }
+    .social-item:hover { color: var(--text); padding-left: 8px; }
+    .social-item__platform {
+      font-size: 8px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      min-width: 84px;
+    }
+    .social-item__arrow {
+      margin-left: auto;
+      color: var(--text-muted);
+      font-size: 14px;
+      transition: color .18s;
+    }
+    .social-item:hover .social-item__arrow { color: var(--neon-green); }
+
+    /* Form panel */
+    .form-panel {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      padding: 44px;
+      border: 1px solid rgba(255,255,255,.04);
+    }
+    .form-panel__title {
+      font-family: var(--font-display);
+      font-size: 38px;
+      letter-spacing: .04em;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+    .form-stack { display: flex; flex-direction: column; gap: 22px; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* Success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 60px 0;
+      flex-direction: column;
+      align-items: center;
+    }
+    .form-success__icon {
+      font-family: var(--font-display);
+      font-size: 72px;
+      color: var(--neon-green);
+      text-shadow: var(--glow-text-green);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .form-success__title {
+      font-family: var(--font-display);
+      font-size: 44px;
+      letter-spacing: .04em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .form-success__body {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.75;
+      max-width: 320px;
+    }
+
+    @media (max-width: 960px) {
+      .contact-layout { grid-template-columns: 1fr; gap: 52px; }
+      .form-row-2 { grid-template-columns: 1fr; }
+      .form-panel { padding: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="crt-nav">
+    <a href="index.html" class="crt-nav__logo">
+      <span class="crt-nav__dot"></span>
+      <div>
+        <div>SIGNAL</div>
+        <div class="crt-nav__logo-sub">// CRT TEMPLATE</div>
+      </div>
+    </a>
+    <ul class="crt-nav__links">
+      <li><a href="work.html">WORK</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="blog.html">BLOG</a></li>
+      <li><a href="contact.html" class="active">CONTACT</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-header">
+    <div class="page-header__eyebrow">CONNECT / GET IN TOUCH</div>
+    <h1 class="page-header__title">CONTACT</h1>
+    <p class="page-header__desc">Have a project in mind? Let's talk about how we can work together to bring it to life.</p>
+  </header>
+
+  <div class="rainbow-bar"></div>
+
+  <section class="section">
+    <div class="contact-layout">
+
+      <!-- Info column -->
+      <div>
+        <div class="avail-pill">
+          <span class="avail-pill__dot"></span>
+          AVAILABLE FOR PROJECTS
+        </div>
+
+        <h2 class="contact-info__title">
+          LET'S<br>CREATE<br><span class="text-green">TOGETHER</span>
+        </h2>
+
+        <p class="contact-info__body">
+          Whether you need a brand identity from scratch, a website that
+          actually reflects your vision, or motion work that stops the scroll
+          — I want to hear about it.
+        </p>
+
+        <div class="contact-details">
+          <div class="contact-row">
+            <div class="contact-row__lbl">EMAIL</div>
+            <div class="contact-row__val"><a href="/cdn-cgi/l/email-protection#6d05080101022d1e040a030c01431e1918090402"><span class="__cf_email__" data-cfemail="4d25282121220d3e242a232c21633e3938292422">[email&#160;protected]</span></a></div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-row__lbl">LOCATION</div>
+            <div class="contact-row__val">New York, NY &nbsp;·&nbsp; Remote OK</div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-row__lbl">RESPONSE</div>
+            <div class="contact-row__val">Within 48 hours</div>
+          </div>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">— FIND ME ONLINE</div>
+        <div class="social-list">
+          <a href="#" class="social-item">
+            <span class="social-item__platform">Instagram</span>
+            @signal.studio
+            <span class="social-item__arrow">↗</span>
+          </a>
+          <a href="#" class="social-item">
+            <span class="social-item__platform">Behance</span>
+            behance.net/signal
+            <span class="social-item__arrow">↗</span>
+          </a>
+          <a href="#" class="social-item">
+            <span class="social-item__platform">LinkedIn</span>
+            linkedin.com/in/signal
+            <span class="social-item__arrow">↗</span>
+          </a>
+          <a href="#" class="social-item">
+            <span class="social-item__platform">Twitter / X</span>
+            @signal_studio
+            <span class="social-item__arrow">↗</span>
+          </a>
+          <a href="#" class="social-item">
+            <span class="social-item__platform">TikTok</span>
+            @signal.studio
+            <span class="social-item__arrow">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Form column -->
+      <div class="form-panel">
+        <div class="form-panel__title">SEND A MESSAGE</div>
+
+        <div class="form-stack" id="contact-form">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">NAME</label>
+              <input type="text" class="form-input" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">EMAIL</label>
+              <input type="email" class="form-input" placeholder="your@email.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">PROJECT TYPE</label>
+            <select class="form-input form-select" style="cursor:pointer;">
+              <option value="" style="background:var(--surface);">Select a type...</option>
+              <option style="background:var(--surface);">Brand Identity</option>
+              <option style="background:var(--surface);">Web Design &amp; Development</option>
+              <option style="background:var(--surface);">Motion &amp; Animation</option>
+              <option style="background:var(--surface);">Art Direction</option>
+              <option style="background:var(--surface);">Something else</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">BUDGET RANGE</label>
+            <select class="form-input form-select" style="cursor:pointer;">
+              <option value="" style="background:var(--surface);">Select a range...</option>
+              <option style="background:var(--surface);">Under $2,000</option>
+              <option style="background:var(--surface);">$2,000 – $5,000</option>
+              <option style="background:var(--surface);">$5,000 – $15,000</option>
+              <option style="background:var(--surface);">$15,000 – $50,000</option>
+              <option style="background:var(--surface);">$50,000+</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">MESSAGE</label>
+            <textarea class="form-textarea" placeholder="Tell me about your project — what you're building, what you need, and when you need it by..."></textarea>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary" onclick="submitForm()">SEND MESSAGE &nbsp;→</button>
+            <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;color:var(--text-muted);">Response within 48 hrs</span>
+          </div>
+        </div>
+
+        <!-- Success -->
+        <div class="form-success" id="form-success">
+          <div class="form-success__icon">✓</div>
+          <div class="form-success__title">MESSAGE SENT</div>
+          <p class="form-success__body">Thanks for reaching out. I'll review your project and be in touch within 48 hours.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="rainbow-bar"></div>
+
+  <footer class="site-footer">
+    <div class="site-footer__brand">SIGNAL</div>
+    <div class="site-footer__copy">© 2024 · All rights reserved</div>
+    <nav class="site-footer__links">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    function submitForm() {
+      const form = document.getElementById('contact-form');
+      const success = document.getElementById('form-success');
+      form.style.display = 'none';
+      success.style.display = 'flex';
+    }
+  </script>
+</body>
+</html>

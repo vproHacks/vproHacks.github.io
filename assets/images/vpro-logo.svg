@@ -1,0 +1,8 @@
+<svg viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="vpro">
+  <rect x="0" y="6" width="36" height="36" rx="4" stroke="#4dff6e" stroke-width="1.5" fill="#0f0f0e"/>
+  <rect x="0" y="6" width="36" height="36" rx="4" fill="rgba(77,255,110,0.06)"/>
+  <path d="M9 17 L18 31 L27 17" stroke="#4dff6e" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="28" y="19" width="3" height="12" rx="1" fill="#4dff6e"/>
+  <text x="48" y="34" font-family="Bebas Neue, sans-serif" font-size="32" fill="#f0ebe3" letter-spacing="2">VPRO</text>
+  <text x="48" y="46" font-family="Space Mono, monospace" font-size="7" fill="#8a857d" letter-spacing="3">// HACKS</text>
+</svg>

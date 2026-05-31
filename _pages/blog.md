@@ -1,17 +1,8 @@
 ---
-title: "Blog"
-permalink: /categories/blog/
-layout: archive
-author_profile: true
+permalink: /blog/
+title: Blog
+layout: listing
+listing_view: list
+header_eyebrow: EDITORIAL / PROJECT LOG
+header_desc: Write-ups and reflections on projects, hackathons, and engineering work. Same feed as Work — different view.
 ---
-
-<div class="category-header">
-  <h1>Blog Posts</h1>
-  <p>Personal reflections, insights, and thoughts on engineering education, career development, and the intersection of technology and society.</p>
-</div>
-
-{% for post in site.categories.blog %}
-  {% include archive-single.html %}
-{% endfor %}
-
-{% include paginator.html %}

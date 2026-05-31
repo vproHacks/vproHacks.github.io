@@ -1,21 +1,20 @@
 ---
 permalink: /about/
-title: "About"
+title: About
+layout: about
 ---
 
-## Hello! I'm Vraj Prajapati
-
-I'm a passionate **Engineering Science** student at the **University of Toronto**, expected to graduate in **May 2027**. I've worked as an **ML Compiler Engineer Intern** at **Tenstorrent** in Austin, TX, where I focused on cutting-edge compiler technologies and machine learning optimization.
-
-### Education
-- **University of Toronto** - B.ASc Engineering Science - Electrical & Computer Engineering (May 2027)
-
-### Technical Skills
-- **Programming Languages**: C, C++, Python, Java, SystemVerilog
-- **Leadership**: Collaborative Leadership, Mentorship, Teaching
-- **Domains**: Engineering, AI, Robotics, LLVM, MLIR, Web Development
-
-### Interests
-Making funny robots, Cooking, Going to the gym, Table Tennis, Bass Guitar, Punny Puns, Cheddar Broccoli Soup
-
-Feel free to reach out if you'd like to collaborate on interesting projects or just chat about technology!
+<p>
+  I'm an Engineering Science student at the <strong>University of Toronto</strong>, expected to graduate in
+  <strong>May 2027</strong>. I've worked as an <strong>ML Compiler Engineer Intern</strong> at
+  <strong>Tenstorrent</strong>, focusing on compiler technologies and machine learning optimization on AI hardware.
+</p>
+<p>
+  I build across robotics, embedded systems, and full-stack software — from magnetic coil guns with computer vision
+  to community discovery platforms at hackathons. I lead technical teams at IEEE UofT and UTMIST, and I'm always
+  looking for the next hard problem at the intersection of hardware and AI.
+</p>
+<p>
+  Interests: funny robots, cooking, the gym, table tennis, bass guitar, and cheddar broccoli soup.
+  <span class="text-green">Feel free to reach out</span> for collaborations or just to chat about engineering.
+</p>

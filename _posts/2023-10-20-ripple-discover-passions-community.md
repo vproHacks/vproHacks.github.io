@@ -10,6 +10,8 @@ tags:
   - python
   - nlp
   - fullstack
+image: /assets/images/ripple.png
+excerpt: "UofTHacks X project using NLP and Cohere to help users discover local events and explore new passions."
 ---
 
 Ripple was a project made with teammates for UofTHacks X.
@@ -20,6 +22,6 @@ With a theme of exploration for the hackathon, Ripple was used to help the user 
 
 **Created Using:** Python3, Flask, SQL, React, Node.JS, Figma, Cohere Natural Language Processing
 
-{% include figure image_path="/assets/images/ripple.png" alt="Ripple Project Screenshot" caption="Ripple community discovery platform interface" %}
+![Ripple community discovery platform interface](/assets/images/ripple.png)
 
 You can find Ripple and its source code by clicking [here](https://github.com/vproHacks/uoft-hacks-X) to get redirected to the GitHub repository.

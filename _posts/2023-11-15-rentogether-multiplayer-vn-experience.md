@@ -9,6 +9,8 @@ tags:
   - flask
   - tkinter
   - gaming
+image: /assets/images/rentogether.png
+excerpt: "Hack the North++ project turning visual novel choices into live audience polls with Flask and Python."
 ---
 
 RenTogether was a project that was submitted to Hack the North++.
@@ -19,6 +21,6 @@ RenTogether is used to turn a visual novel into something more interactive, it w
 
 **Created Using:** Python3, Flask, Tkinter, Quartz
 
-{% include figure image_path="/assets/images/rentogether.png" alt="RenTogether Project Screenshot" caption="RenTogether multiplayer visual novel experience interface" %}
+![RenTogether multiplayer visual novel experience interface](/assets/images/rentogether.png)
 
 You can find RenTogether and its source code by clicking [here](https://github.com/vproHacks/RenTogether) to get redirected to the GitHub repository.

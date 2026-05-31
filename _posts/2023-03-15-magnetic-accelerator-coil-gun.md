@@ -9,6 +9,8 @@ tags:
   - embedded
   - ai
   - computer-vision
+image: /assets/images/magnetic-accelerator.png
+excerpt: "MakeUofT 2023 award-winning magnetic coil gun with AI-powered targeting on the Qualcomm Snapdragon 8450 HDK."
 ---
 
 **MakeUofT 2023 - Best Use of Qualcomm 8450HDK Award Winner**
@@ -27,4 +29,4 @@ This project combined principles of electromagnetics with embedded AI and comput
 
 This project demonstrated the intersection of traditional physics principles with modern embedded AI and computer vision technologies, earning recognition for the best use of the Qualcomm hardware development kit.
 
-{% include figure image_path="/assets/images/magnetic-accelerator.png" alt="Magnetic Accelerator Project" caption="Magnetic coil gun with AI-powered targeting system" %}
+![Magnetic coil gun with AI-powered targeting system](/assets/images/magnetic-accelerator.png)
