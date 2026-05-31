@@ -199,7 +199,7 @@
 
     if (prefersReducedMotion()) {
       els.content.style.opacity = '1';
-      els.wmText.textContent = 'VPRO';
+      els.wmText.textContent = 'Vraj.dev';
       if (els.wmCursor) els.wmCursor.style.display = 'none';
       if (els.viGlyph) els.viGlyph.style.opacity = '1';
       if (els.viCursor) els.viCursor.style.display = 'none';
@@ -250,14 +250,14 @@
     go(2100, function () {
       els.wmCursor.style.opacity = '1';
       els.wmCursor.classList.add('intro-vi-line__cursor--blink');
-      viTypeLetter(els.wmText, els.wmCursor, 'VPRO', 0, 140);
+      viTypeLetter(els.wmText, els.wmCursor, 'Vraj.dev', 0, 140);
     });
 
     go(2680, function () {
       if (els.statusEl) {
         els.statusEl.textContent = 'READY';
-        els.statusEl.style.color = 'rgba(77,255,110,0.58)';
-        els.statusEl.style.textShadow = '0 0 12px rgba(77,255,110,0.4)';
+        els.statusEl.style.color = 'rgba(191,95,255,0.58)';
+        els.statusEl.style.textShadow = '0 0 12px rgba(191,95,255,0.4)';
       }
     });
 

@@ -1,6 +1,6 @@
-<a href="{{ '/' | relative_url }}" class="crt-nav__logo" id="site-logo" data-replay-intro aria-label="vpro home — click to replay intro">
+<a href="{{ '/' | relative_url }}" class="crt-nav__logo" id="site-logo" data-replay-intro aria-label="Vraj.dev home — click to replay intro">
   {% include logo-icon.svg %}
   <div>
-    <div class="crt-nav__logo-text">VPRO</div>
+    <div class="crt-nav__logo-text">Vraj.dev</div>
   </div>
 </a>
